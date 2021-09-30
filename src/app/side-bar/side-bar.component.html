@@ -1,0 +1,14 @@
+<mat-tab-group id="container">
+  <mat-tab label="Route" class="tab">
+    <app-address-input (address)="setAddress($event)"></app-address-input>
+
+
+  </mat-tab>
+  <mat-tab label="Second" class="tab">
+    <div id="directionsPanel"></div>
+  </mat-tab>
+  <!-- <ng-template matTabContent>
+    Content 1 - Loaded: {{getTimeLoaded(1) | date:'medium'}}
+  </ng-template> -->
+
+</mat-tab-group>

@@ -12,12 +12,18 @@ import { AddressInputComponent } from './components/address-input/address-input.
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { SideBarComponent } from './side-bar/side-bar.component';
+import { RouteStringPipe } from './route-string.pipe';
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   declarations: [
     AppComponent,
     AlternateMapComponent,
     AutocompleteComponent,
     AddressInputComponent,
+    SideBarComponent,
+    RouteStringPipe,
   ],
   imports: [
     BrowserModule,
@@ -25,6 +31,8 @@ import { MatIconModule } from '@angular/material/icon';
     NoopAnimationsModule,
     MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

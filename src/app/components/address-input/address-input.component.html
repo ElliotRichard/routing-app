@@ -1,1 +1,21 @@
-<app-autocomplete></app-autocomplete>
+<div id="sidebar">
+  <div id="sideBar">
+    <ng-container *ngFor="let routeType of addresses">
+      <app-autocomplete class="autocomplete" [type]="routeType" (setAddress)="setAddress($event)">
+      </app-autocomplete>
+    </ng-container>
+    <div class="footer">
+      <button (click)="addDestination()">
+        <mat-icon class="icon">add_circle_outline</mat-icon>
+      </button>
+      <div class="addDestinationContainer">
+        <div class="addDestinationContent">Add {{componentType | routeString | titlecase}}</div>
+      </div>
+    </div>
+    <div class="footer-button">
+      <button (click)="getRoute()">Find Optimal Route</button>
+    </div>
+
+  </div>
+
+</div>
