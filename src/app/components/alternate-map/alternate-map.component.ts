@@ -1,5 +1,12 @@
 import { DataService } from './../../services/data.service';
-import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  OnInit,
+  Input,
+  AfterViewInit,
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 // import { tspClass } from '../../../../../source-archive/google-maps-tsp-solver/trunk/BpTspSolver';
 import { IRoute } from '../../types';
@@ -8,22 +15,24 @@ import { IRoute } from '../../types';
   templateUrl: './alternate-map.component.html',
   styleUrls: ['./alternate-map.component.scss'],
 })
-export class AlternateMapComponent implements OnInit {
+export class AlternateMapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapRef', { static: true }) mapElement: ElementRef;
   map;
   markers = [];
   private directionsService = new google.maps.DirectionsService();
   private directionsRenderer = new google.maps.DirectionsRenderer();
   @Input() center;
-  constructor(private dataService: DataService) {}
-
+  constructor(private dataService: DataService, private elRef: ElementRef) {}
+  ngAfterViewInit() {
+    this.directionsRenderer.setPanel(
+      this.elRef.nativeElement.querySelector('directionsPanel')
+    );
+  }
   ngOnInit() {
     this.renderMap();
     // this.addRouting();
     this.directionsRenderer.setMap(this.map);
-    this.directionsRenderer.setPanel(
-      document.getElementById('directionsPanel')
-    );
+
     this.dataService.routes.subscribe((newRoute: IRoute) => {
       let waypoints = [];
       if (newRoute.waypoints) {

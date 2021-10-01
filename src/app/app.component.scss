@@ -9,21 +9,28 @@
   display: flex;
   width: 100vw;
   height: 90vh;
+
   // border: 1px solid black;
 }
 
 #header {
   @include exact-fit();
   height: 10vh;
+  background: rgb(241, 166, 68);
 }
 
 #title {
   float: left;
   padding-left: 4vw;
+  margin: 0;
 }
 
 #route_details {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#directionsPanel {
+  width: 15vw;
 }
