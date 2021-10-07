@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlternateMapComponent } from './alternate-map.component';
+import { MapComponent } from './map.component';
 
 describe('AlternateMapComponent', () => {
-  let component: AlternateMapComponent;
-  let fixture: ComponentFixture<AlternateMapComponent>;
+  let component: MapComponent;
+  let fixture: ComponentFixture<MapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AlternateMapComponent ]
-    })
-    .compileComponents();
+      declarations: [MapComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AlternateMapComponent);
+    fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

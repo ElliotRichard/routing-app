@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class DataService {
   center: Subject<any> = new Subject();
   routes: Subject<IRoute> = new Subject();
+  addressList: Subject<any> = new Subject();
   private route: IRoute = {};
   private waypointMap: Map<number, any> = new Map();
   private waypointComponentAmount: 0;

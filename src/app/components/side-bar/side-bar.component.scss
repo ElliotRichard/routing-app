@@ -1,0 +1,38 @@
+#sidebarContainer {
+  width: 20vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  height: 90vh;
+  margin: 0;
+  padding: 0;
+}
+
+.hideY {
+  overflow-y: hidden;
+}
+
+.scrollY {
+  overflow-y: scroll;
+}
+
+.displayNone {
+  display: none;
+}
+.displayContents {
+  display: content;
+}
+
+.tab {
+  width: 50%;
+}
+
+.directionsPanel {
+  width: 100%;
+}
+
+.newRouteButtonContainer {
+  display: flex;
+  margin: 1rem;
+  justify-content: center;
+  align-items: center;
+}

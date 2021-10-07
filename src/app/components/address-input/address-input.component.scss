@@ -1,45 +1,13 @@
-#sideBar {
-  // position: absolute;
-  // z-index: 5;
-  // background-color: rgba(161, 161, 161, 0.751);
-  width: 100%;
-  // border: 1px solid red;
-  box-sizing: border-box;
+.autocompleteForm {
   margin: 0;
+  margin-bottom: -20px;
   padding: 0;
-  overflow: hidden;
-}
-.footer {
-  display: flex;
+  box-sizing: border-box;
   width: 100%;
-  // border: 1px solid orange;
-}
-.footer-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.footer button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-.icon:active {
-  background: rgba(204, 101, 5, 0.668);
-  border-radius: 50%;
-}
-.addDestinationContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.addDestinationContent {
-  color: gray;
-  margin-left: 10px;
 }
 
-.autocomplete {
+.fullWidth {
+  width: 100%;
   margin: 0;
   padding: 0;
 }

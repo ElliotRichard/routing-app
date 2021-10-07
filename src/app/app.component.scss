@@ -16,17 +16,22 @@
 #header {
   @include exact-fit();
   height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgb(241, 166, 68);
 }
 
 #title {
-  float: left;
+  // flex-grow: 0.5;
+  // float: left;
   padding-left: 4vw;
   margin: 0;
 }
 
 #route_details {
   display: flex;
+  flex-grow: 4;
   justify-content: center;
   align-items: center;
 }

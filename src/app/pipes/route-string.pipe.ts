@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { RouteStop } from './types';
+import { RouteStop } from '../types';
 @Pipe({
   name: 'routeString',
 })

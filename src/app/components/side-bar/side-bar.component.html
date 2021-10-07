@@ -1,0 +1,28 @@
+<div [ngClass]="{'scrollY': directionTabActive, 'hideY': routeTabActive}" id="sideBarContainer">
+  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Route" class="tab">
+      <div [style.display]="displayAddressInput">
+        <app-route-input (address)="setAddress($event)"></app-route-input>
+      </div>
+      <div [style.display]="displayPanel">
+        <div class="newRouteButtonContainer">
+          <button mat-raised-button color="primary" (click)="newRoute()">Plan
+            New Route
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab [disabled]="disableDirectionTab" label="Address List" class="tab">
+      <mat-selection-list #addresses>
+        <mat-list-option *ngFor="let address of addressList | async">
+          <mat-icon svgIcon="dog" matListIcon></mat-icon>
+          {{address}}
+        </mat-list-option>
+      </mat-selection-list>
+      <p *ngIf="addressList | async">
+        Addresses Visited: {{addresses.selectedOptions.selected.length}}
+      </p>
+    </mat-tab>
+  </mat-tab-group>
+  <div [ngClass]="{'displayContents': directionTabActive, 'displayNone': routeTabActive}" class="directionsPanel"></div>
+</div>

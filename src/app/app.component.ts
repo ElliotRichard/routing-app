@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,16 @@ export class AppComponent {
     center: { lat: -41.2945923, lng: 174.7629202 },
     zoom: 4,
   };
-  constructor() {
+  constructor(
+    private domSanitizer: DomSanitizer,
+    private matIconRegistry: MatIconRegistry
+  ) {
+    this.matIconRegistry.addSvgIcon(
+      'dog',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'http://localhost/routing-app/images/dog.svg'
+      )
+    );
     this.address = { lat: -41.2945923, lng: 174.7629202 };
   }
 

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddressInputComponent } from './address-input.component';
+import { RouteInputComponent } from './route-input.component';
 
-describe('AutocompleteComponent', () => {
-  let component: AddressInputComponent;
-  let fixture: ComponentFixture<AddressInputComponent>;
+describe('AddressInputComponent', () => {
+  let component: RouteInputComponent;
+  let fixture: ComponentFixture<RouteInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddressInputComponent],
+      declarations: [RouteInputComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddressInputComponent);
+    fixture = TestBed.createComponent(RouteInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
