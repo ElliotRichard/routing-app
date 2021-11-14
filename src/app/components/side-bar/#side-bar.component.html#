@@ -1,6 +1,4 @@
 <div [ngClass]="{'scrollY': directionTabActive, 'hideY': routeTabActive}" id="sideBarContainer">
-  <mat-tab-group [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
-    <mat-tab label="Route" class="tab">
       <div [style.display]="displayAddressInput">
         <app-route-input (address)="setAddress($event)"></app-route-input>
       </div>
@@ -22,7 +20,8 @@
       <p *ngIf="addressList | async">
         Addresses Visited: {{addresses.selectedOptions.selected.length}}
       </p>
-    </mat-tab>
-  </mat-tab-group>
+    
   <div [ngClass]="{'displayContents': directionTabActive, 'displayNone': routeTabActive}" class="directionsPanel"></div>
 </div>
+
+
