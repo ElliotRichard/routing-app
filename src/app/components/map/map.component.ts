@@ -11,10 +11,14 @@ export class MapComponent implements OnInit {
   map;
   markers = [];
   private directionsService = new google.maps.DirectionsService();
-  private directionsRenderer = new google.maps.DirectionsRenderer();
+    private directionsRenderer = new google.maps.DirectionsRenderer();
+    showFooter = false;
   @Input() center;
   constructor(private dataService: DataService) {}
-  ngOnInit() {
+    ngOnInit() {
+	this.dataService.routes.subscribe((newRoute)=> {
+	    this.showFooter = true;
+	});
     this.loadMap();
     this.directionsRenderer.setPanel(
       window.document.querySelector('.directionsPanel')

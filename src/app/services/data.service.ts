@@ -5,12 +5,13 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class DataService {
-  center: Subject<any> = new Subject();
-  routes: Subject<IRoute> = new Subject();
-  addressList: Subject<any> = new Subject();
   private route: IRoute = {};
   private waypointMap: Map<number, any> = new Map();
   private waypointComponentAmount: 0;
+  center: Subject<any> = new Subject();
+  routes: Subject<IRoute> = new Subject();
+  addressList: Subject<any> = new Subject();
+  routeAdded: Subject<boolean> = new Subject();
   addresses: string[] = [];
   constructor() {}
 
@@ -20,9 +21,9 @@ export class DataService {
     this.addresses.push(place);
     console.log(`Currently Stored Addresses: ${this.addresses.toString()}`);
   }
-
   addRoute(place, type: RouteStop, wayPointIndex?: number) {
-    switch (type) {
+      this.routeAdded.next(true);
+      switch (type) {
       case RouteStop.START:
         this.route.start = place.geometry.location;
         break;
@@ -37,7 +38,6 @@ export class DataService {
         break;
     }
   }
-
   createWaypointComponent() {
     this.waypointComponentAmount++;
     return this.waypointComponentAmount;
@@ -45,7 +45,6 @@ export class DataService {
   deleteWaypointComponent(index: number) {
     this.waypointMap.delete(index);
   }
-
   plotRoute() {
     console.log(`Start: ${this.route.start} End: ${this.route.end}`);
     if (this.waypointComponentAmount !== 0) {

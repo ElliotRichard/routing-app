@@ -4,9 +4,17 @@ import { RouteStop } from '../types';
   name: 'routeString',
 })
 export class RouteStringPipe implements PipeTransform {
-  transform(value: RouteStop, ...args: unknown[]): string {
-    if (value === RouteStop.WAYPOINT) {
-      return 'DESTINATION';
-    } else return RouteStop[value];
+    transform(value: RouteStop, ...args: unknown[]): string {
+	switch(value) {
+	    case (RouteStop.START):
+		return 'START';
+	    case (RouteStop.WAYPOINT):
+		return 'DOG ADDRESS';
+	    case (RouteStop.END):
+		return 'DESTINATION';
+	    default:
+		return value;
+		
+	}
   }
 }

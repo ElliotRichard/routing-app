@@ -16,21 +16,30 @@ import { RouteStop } from '../../types';
   styleUrls: ['./address-input.component.scss'],
 })
 export class AddressInputComponent implements OnInit, AfterViewInit {
-  addressType: string = 'address';
-  currentWaypoint?: any;
-  waypointComponentIndex?: number;
   @Output() setAddress: EventEmitter<any> = new EventEmitter();
   @ViewChild('addressInput') addressText: any;
   @Input() type: RouteStop;
+  addressType: string = 'address';
+  currentWaypoint?: any;
+  waypointComponentIndex?: number;
   autocompleteInput: string;
   queryWait: boolean;
-
+    icon: string;
   constructor(private dataService: DataService) {}
 
-  ngOnInit() {
-    if (this.type === RouteStop.WAYPOINT) {
-      this.waypointComponentIndex = this.dataService.createWaypointComponent();
-    }
+    ngOnInit() {
+	switch(this.type) {
+	    case(RouteStop.WAYPOINT):
+	this.waypointComponentIndex = this.dataService.createWaypointComponent();
+	this.icon = 'dog';
+		break;
+	    case(RouteStop.START):
+		this.icon = 'place'
+		break;
+	    case(RouteStop.END):
+		this.icon = 'map';
+		break;
+	}
   }
 
   ngAfterViewInit() {
@@ -71,9 +80,9 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       } else this.dataService.addRoute(place, this.type);
     });
   }
-
   invokeEvent(place: any) {
     this.setAddress.emit(place);
     this.dataService.setCenter(place);
   }
+    
 }

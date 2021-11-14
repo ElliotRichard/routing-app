@@ -22,7 +22,7 @@ export class SideBarComponent implements OnInit {
     this.addressList = this.dataService.addressList.pipe
     (tap(() => {
         this.disableDirectionTab = false;
-        this.selected.setValue(1);
+        this.selectedTab.setValue(1);
     	})
     );
     this.selectedTab.valueChanges.subscribe((newValue) => {
@@ -34,10 +34,6 @@ export class SideBarComponent implements OnInit {
         this.routeTabActive = false;
       }
     });
-  }
-  setAddress($event) {
-    this.displayPanel = 'block';
-    this.displayAddressInput = 'none';
   }
   newRoute() {
     this.displayAddressInput = 'block';

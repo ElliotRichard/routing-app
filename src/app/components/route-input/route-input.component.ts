@@ -7,30 +7,36 @@ import { RouteStop } from '../../types';
   styleUrls: ['./route-input.component.scss'],
 })
 export class RouteInputComponent implements OnInit {
+  @Output() address: EventEmitter<any> = new EventEmitter();
   addresses: number[] = [RouteStop.START];
   displayFooter = 'none';
-  componentType: RouteStop = RouteStop.END;
-  @Output() address: EventEmitter<any> = new EventEmitter();
+    componentType: RouteStop = RouteStop.END;
+    showAddWaypoint = false;
+    private addressCount = 1;
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.dataService.center.subscribe((newCenter) => {
       console.log('newCenter at addressInput');
-      this.displayFooter = 'flex';
+	this.displayFooter = 'flex';
     });
+      this.dataService.routeAdded.subscribe((routeAdded)=> {
+	  this.showAddWaypoint = true;
+      });
   }
-  addDestination() {
+  addressSet($address) {
+      console.log('Route-Input', $address);
+      if (this.addressCount === this.addresses.length) {
+	  this.showAddWaypoint = true;
+      }
+  }
+  addRouteWaypoint() {
     if (this.addresses.length === 1) {
       this.addresses.push(RouteStop.END);
       this.componentType = RouteStop.WAYPOINT;
     } else this.addresses.push(RouteStop.WAYPOINT);
-    this.addresses.sort((a, b) => a - b);
     this.displayFooter = 'none';
   }
-  setAddress($event) {
-    // this.address.emit($event);
-  }
-
   getRoute() {
     this.dataService.plotRoute();
     this.address.emit('new route');

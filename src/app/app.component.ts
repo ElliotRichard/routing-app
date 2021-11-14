@@ -22,7 +22,7 @@ export class AppComponent {
     this.matIconRegistry.addSvgIcon(
       'dog',
       this.domSanitizer.bypassSecurityTrustResourceUrl(
-        'http://localhost/routing-app/images/dog.svg'
+        './assets/images/dog.svg'
       )
     );
     this.address = { lat: -41.2945923, lng: 174.7629202 };
