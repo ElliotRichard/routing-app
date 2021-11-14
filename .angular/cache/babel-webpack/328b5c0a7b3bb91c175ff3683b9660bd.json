@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var RouteStop = /*#__PURE__*/(() => {\n  (function (RouteStop) {\n    RouteStop[RouteStop[\"START\"] = 0] = \"START\";\n    RouteStop[RouteStop[\"WAYPOINT\"] = 1] = \"WAYPOINT\";\n    RouteStop[RouteStop[\"END\"] = 2] = \"END\";\n  })(RouteStop || (RouteStop = {}));\n\n  return RouteStop;\n})();","map":null,"metadata":{},"sourceType":"module"}
