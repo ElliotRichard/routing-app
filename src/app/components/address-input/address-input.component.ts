@@ -16,7 +16,7 @@ import { RouteStop } from '../../types';
   styleUrls: ['./address-input.component.scss'],
 })
 export class AddressInputComponent implements OnInit, AfterViewInit {
-  @Output() setAddress: EventEmitter<any> = new EventEmitter();
+  @Output() address: EventEmitter<any> = new EventEmitter();
   @ViewChild('addressInput') addressText: any;
   @Input() type: RouteStop;
   addressType: string = 'address';
@@ -24,30 +24,31 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
   waypointComponentIndex?: number;
   autocompleteInput: string;
   queryWait: boolean;
-    icon: string;
+  icon: string;
   constructor(private dataService: DataService) {}
 
-    ngOnInit() {
-	switch(this.type) {
-	    case(RouteStop.WAYPOINT):
-	this.waypointComponentIndex = this.dataService.createWaypointComponent();
-	this.icon = 'dog';
-		break;
-	    case(RouteStop.START):
-		this.icon = 'place'
-		break;
-	    case(RouteStop.END):
-		this.icon = 'map';
-		break;
-	}
+  ngOnInit() {
+    switch (this.type) {
+      case RouteStop.WAYPOINT:
+        this.waypointComponentIndex =
+          this.dataService.createWaypointComponent();
+        this.icon = 'dog';
+        break;
+      case RouteStop.START:
+        this.icon = 'place';
+        break;
+      case RouteStop.END:
+        this.icon = 'map';
+        break;
+    }
   }
 
   ngAfterViewInit() {
     this.addressText.nativeElement.focus();
-    this.getPlaceAutocomplete();
+    this.setAddress();
   }
 
-  private getPlaceAutocomplete() {
+  private setAddress() {
     const outerWellingtonBounds: google.maps.LatLngBounds =
       new google.maps.LatLngBounds(
         // SouthWest coordinates
@@ -62,7 +63,6 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       this.addressText.nativeElement,
       {
         bounds: outerWellingtonBounds,
-
         componentRestrictions: { country: 'NZ' },
         fields: ['address_components', 'geometry'],
         types: ['address'],
@@ -70,7 +70,7 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
     );
     google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const place = autocomplete.getPlace();
-      this.invokeEvent(place);
+      this.addressSet(place);
       if (this.type === RouteStop.WAYPOINT) {
         this.dataService.addRoute(
           place,
@@ -80,9 +80,8 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       } else this.dataService.addRoute(place, this.type);
     });
   }
-  invokeEvent(place: any) {
-    this.setAddress.emit(place);
+  addressSet(place: any) {
+    this.address.emit(place);
     this.dataService.setCenter(place);
   }
-    
 }

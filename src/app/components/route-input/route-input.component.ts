@@ -1,44 +1,55 @@
 import { DataService } from '../../services/data.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { RouteStop } from '../../types';
 @Component({
   selector: 'app-route-input',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './route-input.component.html',
   styleUrls: ['./route-input.component.scss'],
 })
 export class RouteInputComponent implements OnInit {
-  @Output() address: EventEmitter<any> = new EventEmitter();
-  addresses: number[] = [RouteStop.START];
+  private addressCount = 0;
+  addresses: number[] = [RouteStop.START, RouteStop.END];
   displayFooter = 'none';
-    componentType: RouteStop = RouteStop.END;
-    showAddWaypoint = false;
-    private addressCount = 1;
-  constructor(private dataService: DataService) {}
+  componentType: RouteStop = RouteStop.WAYPOINT;
+  showAddWaypoint = false;
+  showFindRoute = false;
+  constructor(
+    private dataService: DataService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.dataService.center.subscribe((newCenter) => {
       console.log('newCenter at addressInput');
-	this.displayFooter = 'flex';
+      // this.displayFooter = 'flex';
     });
-      this.dataService.routeAdded.subscribe((routeAdded)=> {
-	  this.showAddWaypoint = true;
-      });
+    this.dataService.routeAdded.subscribe((routeAdded) => {
+      console.log('route-input: route added');
+      // this.showAddWaypoint = true;
+    });
   }
   addressSet($address) {
-      console.log('Route-Input', $address);
-      if (this.addressCount === this.addresses.length) {
-	  this.showAddWaypoint = true;
-      }
+    console.log('route-input: addressSet()', $address);
+    this.addressCount++;
+    if (this.addressCount >= this.addresses.length) {
+      this.showAddWaypoint = true;
+      this.showFindRoute = true;
+      this.changeDetectorRef.detectChanges();
+    }
   }
   addRouteWaypoint() {
-    if (this.addresses.length === 1) {
-      this.addresses.push(RouteStop.END);
-      this.componentType = RouteStop.WAYPOINT;
-    } else this.addresses.push(RouteStop.WAYPOINT);
-    this.displayFooter = 'none';
+    this.addresses.push(RouteStop.WAYPOINT);
+    this.showAddWaypoint = false;
   }
   getRoute() {
     this.dataService.plotRoute();
-    this.address.emit('new route');
   }
 }

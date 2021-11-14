@@ -1,34 +1,48 @@
-.footer {
+.route-input__addWaypoint {
   display: flex;
   margin-top: 20px;
   width: 100%;
 }
-.footer-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.footer button {
+
+.route-input__addWaypoint button {
   background: none;
   border: none;
-  padding: 0;
   cursor: pointer;
+  padding: 0;
 }
-.icon:active {
+
+.route-input__addWaypoint--icon:active {
   background: rgba(204, 101, 5, 0.668);
   border-radius: 50%;
 }
-.addDestinationContainer {
+
+.route-input__addWaypoint__text {
+  align-items: center;
+  cursor: default;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
-.addDestinationContent {
+.route-input__addWaypoint__text--content {
   color: gray;
   margin-left: 10px;
 }
-.autocomplete {
+
+.route-input__findRoute {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.inputs__input {
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+.displayNone {
+  display: none;
+}
+.displayFlex {
+  display: flex;
 }

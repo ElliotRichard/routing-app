@@ -1,17 +1,17 @@
-<ng-container *ngFor="let routeType of addresses">
-  <app-address-input class="autocomplete" [type]="routeType" (setAddress)="addressSet($event)">
+<ng-container class="route-input__inputs" *ngFor="let routeType of addresses">
+  <app-address-input class="inputs__input" [type]="routeType" (address)="addressSet($event)">
   </app-address-input>
 </ng-container>
 
-<div class="footer">
+<div class="route-input__addWaypoint displayNone" [ngClass]="{'displayFlex': showAddWaypoint}">
   <button (click)="addRouteWaypoint()">
-    <mat-icon class="icon">add_circle_outline</mat-icon>
+    <mat-icon class="route-input__addWaypoint--icon">add_circle_outline</mat-icon>
   </button>
-  <div class="addWaypointContainer">
-    <div class="addWaypointContent">Add {{componentType | routeString | titlecase}}</div>
+  <div class="route-input__addWaypoint__text">
+    <div class="route-input__addWaypoint__text--content">Add {{componentType | routeString | titlecase}}</div>
   </div>
 </div>
-<span *ngIf="showAddWaypoint">Show</span>
-<div class="footer-button">
+
+<div class="route-input__findRoute displayNone" [ngClass]="{'displayFlex': showFindRoute}">
   <button mat-raised-button color="primary" (click)="getRoute()">Find Optimal Route</button>
 </div>

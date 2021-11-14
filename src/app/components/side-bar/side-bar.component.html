@@ -1,22 +1,23 @@
 <div class="side-bar">
+  <!-- Google Maps Directions get displayed here when a route is found -->
   <div [ngClass]="{'displayContents': directionTabActive, 'displayNone': routeTabActive}" class="directionsPanel"></div>
   <div [style.display]="displayAddressInput">
     <app-route-input></app-route-input>
-   </div>
-   <div [style.display]="displayPanel">
-     <div class="newRouteButtonContainer">
-       <button mat-raised-button color="primary" (click)="newRoute()">Plan
-            New Route
-          </button>
-        </div>
-      </div>
-      <mat-selection-list #addresses>
-        <mat-list-option *ngFor="let address of addressList | async">
-          <mat-icon svgIcon="dog" matListIcon></mat-icon>
-          {{address}}
-        </mat-list-option>
-      </mat-selection-list>
-      <p *ngIf="addressList | async">
-        Addresses Visited: {{addresses.selectedOptions.selected.length}}
-      </p>
+  </div>
+  <div [style.display]="displayPanel">
+    <div class="newRouteButtonContainer">
+      <button mat-raised-button color="primary" (click)="newRoute()">Plan
+        New Route
+      </button>
+    </div>
+  </div>
+  <mat-selection-list #addresses>
+    <mat-list-option *ngFor="let address of addressList | async">
+      <mat-icon svgIcon="dog" matListIcon></mat-icon>
+      {{address}}
+    </mat-list-option>
+  </mat-selection-list>
+  <p *ngIf="addressList | async">
+    Addresses Visited: {{addresses.selectedOptions.selected.length}}
+  </p>
 </div>

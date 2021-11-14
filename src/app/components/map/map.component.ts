@@ -1,24 +1,28 @@
 import { DataService } from '../../services/data.service';
+
 import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
 import { IRoute } from '../../types';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  @Input() center;
   @ViewChild('mapRef', { static: true }) mapElement: ElementRef;
+  private directionsService = new google.maps.DirectionsService();
+  private directionsRenderer = new google.maps.DirectionsRenderer();
   map;
   markers = [];
-  private directionsService = new google.maps.DirectionsService();
-    private directionsRenderer = new google.maps.DirectionsRenderer();
-    showFooter = false;
-  @Input() center;
+  showFooter = false;
+
   constructor(private dataService: DataService) {}
-    ngOnInit() {
-	this.dataService.routes.subscribe((newRoute)=> {
-	    this.showFooter = true;
-	});
+
+  ngOnInit() {
+    this.dataService.routes.subscribe((newRoute) => {
+      this.showFooter = true;
+    });
     this.loadMap();
     this.directionsRenderer.setPanel(
       window.document.querySelector('.directionsPanel')
