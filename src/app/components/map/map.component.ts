@@ -20,9 +20,6 @@ export class MapComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.routes.subscribe((newRoute) => {
-      this.showFooter = true;
-    });
     this.loadMap();
     this.directionsRenderer.setPanel(
       window.document.querySelector('.directionsPanel')
@@ -30,6 +27,7 @@ export class MapComponent implements OnInit {
     this.directionsRenderer.setMap(this.map);
 
     this.dataService.routes.subscribe((newRoute: IRoute) => {
+      this.showFooter = true;
       let waypoints = [];
       if (newRoute.waypoints) {
         for (let waypoint of newRoute.waypoints) {

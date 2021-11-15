@@ -15,6 +15,7 @@ import { RouteStop } from '../../types';
   styleUrls: ['./route-input.component.scss'],
 })
 export class RouteInputComponent implements OnInit {
+  @Output() routeAdded: EventEmitter<any> = new EventEmitter();
   private addressCount = 0;
   addresses: number[] = [RouteStop.START, RouteStop.END];
   displayFooter = 'none';
@@ -50,6 +51,7 @@ export class RouteInputComponent implements OnInit {
     this.showAddWaypoint = false;
   }
   getRoute() {
+    this.routeAdded.emit(true);
     this.dataService.plotRoute();
   }
 }

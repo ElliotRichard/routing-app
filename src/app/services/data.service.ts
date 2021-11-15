@@ -16,14 +16,13 @@ export class DataService {
   constructor() {}
 
   setCenter(place) {
-    console.log(`New center sent is: ${place.geometry.location}`);
     this.center.next(place.geometry.location);
     this.addresses.push(place);
-    console.log(`Currently Stored Addresses: ${this.addresses.toString()}`);
   }
+
   addRoute(place, type: RouteStop, wayPointIndex?: number) {
-      this.routeAdded.next(true);
-      switch (type) {
+    this.routeAdded.next(true);
+    switch (type) {
       case RouteStop.START:
         this.route.start = place.geometry.location;
         break;
@@ -49,7 +48,7 @@ export class DataService {
     console.log(`Start: ${this.route.start} End: ${this.route.end}`);
     if (this.waypointComponentAmount !== 0) {
       this.route.waypoints = Array.from(this.waypointMap.values());
-      console.log(this.route.waypoints);
+      console.log('Route WayPoints', this.route.waypoints);
     }
     this.routes.next(this.route);
   }
