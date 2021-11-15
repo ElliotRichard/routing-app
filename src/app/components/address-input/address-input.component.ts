@@ -47,13 +47,15 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
           lat: -41.409775832009544,
         },
         // NorthEast coordinates
-        { lng: 175.1495361328125, lat: -41.01099329360267 }
+        {
+          lng: 175.1495361328125,
+          lat: -41.01099329360267,
+        }
       );
     const autocomplete = new google.maps.places.Autocomplete(
       this.addressText.nativeElement,
       {
         bounds: outerWellingtonBounds,
-
         componentRestrictions: { country: 'NZ' },
         fields: ['address_components', 'geometry'],
         types: ['address'],
