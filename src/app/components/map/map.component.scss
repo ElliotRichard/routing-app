@@ -7,15 +7,14 @@
 }
 
 .footer {
-    position: absolute;
-    float: right;
-    width: 78%;
-    right: 10px;
-    bottom: 10px;
-    background: white;
-    padding: 5px;
+  position: absolute;
+  width: 78%;
+  right: 10px;
+  bottom: 10px;
+  background: white;
+  padding: 5px;
 }
 
-.footer>.span {
-    margin: 0;
+.footer--content {
+  margin: 0 auto;
 }

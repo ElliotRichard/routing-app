@@ -40,6 +40,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/environments
 
 # System Files
 .DS_Store
@@ -47,3 +48,8 @@ Thumbs.db
 
 # Angular
 .angular/
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

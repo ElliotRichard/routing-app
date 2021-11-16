@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "router-app-dced6": {
+      "hosting": {
+        "routing-app": [
+          "router-app-dced6"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "router-app-dced6"
+  }
+}

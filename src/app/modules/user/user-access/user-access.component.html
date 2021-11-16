@@ -1,0 +1,5 @@
+<ng-template elementHost (authentication)="$event? authenticated = true : authenticated = false"></ng-template>
+<ng-container *ngIf="authenticated">
+  <p>Edit Dogs</p>
+  <p>Add saved route</p>
+</ng-container>

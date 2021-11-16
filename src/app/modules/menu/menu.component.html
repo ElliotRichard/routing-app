@@ -1,0 +1,6 @@
+<button mat-raised-button (click)="loadUserAccessComponent()" *ngIf="!showUserAccess">Sign In</button>
+<ng-container *ngIf="showUserAccess">
+  <ng-template elementHost></ng-template>
+</ng-container>
+
+<p>Use for dogs or generic routes</p>

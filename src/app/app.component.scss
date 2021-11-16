@@ -4,34 +4,27 @@
   margin: 0;
 }
 
-#map-container {
-  @include exact-fit();
-  display: flex;
-  width: 100vw;
-  height: 90vh;
-}
-
-#header {
+.header {
   @include exact-fit();
   height: 10vh;
   display: flex;
+  flex: 1 1 0;
   justify-content: center;
   align-items: center;
   background: rgb(241, 166, 68);
 }
 
-#title {
+.header--spacer {
+  flex: 1 1 auto;
+}
+
+.header__title {
   padding-left: 4vw;
-  margin: 0;
 }
 
-#route_details {
+.map-container {
+  @include exact-fit();
   display: flex;
-  flex-grow: 4;
-  justify-content: center;
-  align-items: center;
-}
-
-#directionsPanel {
-  width: 15vw;
+  width: 100vw;
+  height: 90vh;
 }

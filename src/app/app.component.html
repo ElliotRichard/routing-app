@@ -1,8 +1,27 @@
 <!-- <google-map [options]="options"></google-map> -->
-<div id="header">
-  <h1 id="title">K9a-Finda</h1>
+<div class="header">
+  <h1 class="header__title">K9a-Finda</h1>
+  <span class="header--spacer"></span>
+  <ng-container class="header__menu">
+
+    <button mat-icon-button aria-label="menu-icon" [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="signIn()">Sign In</button>
+      <button (click)="getData()">Get Data</button>
+      <ng-container *ngIf="data">{{data}}
+        {{data|json}}</ng-container>
+      <ng-template matMenuContent>
+        <app-menu (click)="$event.stopPropagation()"></app-menu>
+      </ng-template>
+
+    </mat-menu>
+  </ng-container>
+
+
 </div>
-<div id="map-container">
+<div class="map-container">
   <app-side-bar></app-side-bar>
   <app-map [center]="address"></app-map>
 </div>

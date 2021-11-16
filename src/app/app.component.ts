@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DataService } from './services/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserDialogComponent } from './modules/user/user-dialog/user-dialog.component';
 
+export interface DialogData {
+  animals: string[];
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,9 +21,15 @@ export class AppComponent {
     center: { lat: -41.2945923, lng: 174.7629202 },
     zoom: 4,
   };
+  response = '';
+  items: any;
+  data: any;
+
   constructor(
+    public dialog: MatDialog,
     private domSanitizer: DomSanitizer,
-    private matIconRegistry: MatIconRegistry
+    private matIconRegistry: MatIconRegistry,
+    private dataService: DataService
   ) {
     this.matIconRegistry.addSvgIcon(
       'dog',
@@ -31,5 +43,29 @@ export class AppComponent {
   setAddress($event) {
     console.log(`App Event: ${$event.geometry.location}`);
     this.address = $event.geometry.location;
+  }
+
+  signIn() {
+    console.log('Signing In');
+    this.dataService.signInUser('elliotpedley@gmail.com', 'router');
+  }
+
+  getData() {
+    console.log('Fetching data');
+    this.dataService
+      .getUserCollection()
+      .subscribe((data) => (this.data = data));
+  }
+
+  openDialog(data: any): void {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width: '250px',
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      console.log('result', result);
+    });
   }
 }

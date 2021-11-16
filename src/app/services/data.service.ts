@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { RouteStop, IRoute } from '../types';
-import { Subject } from 'rxjs';
+import { Subject, Observable, map, tap, catchError, from } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +17,12 @@ export class DataService {
   addressList: Subject<any> = new Subject();
   routeAdded: Subject<boolean> = new Subject();
   addresses: string[] = [];
-  constructor() {}
+  private authToken: any;
+  constructor(
+    public auth: AngularFireAuth,
+    private firestore: AngularFirestore,
+    private http: HttpClient
+  ) {}
 
   setCenter(place) {
     this.center.next(place.geometry.location);
@@ -37,13 +46,16 @@ export class DataService {
         break;
     }
   }
+
   createWaypointComponent() {
     this.waypointComponentAmount++;
     return this.waypointComponentAmount;
   }
+
   deleteWaypointComponent(index: number) {
     this.waypointMap.delete(index);
   }
+
   plotRoute() {
     console.log(`Start: ${this.route.start} End: ${this.route.end}`);
     if (this.waypointComponentAmount !== 0) {
@@ -51,5 +63,28 @@ export class DataService {
       console.log('Route WayPoints', this.route.waypoints);
     }
     this.routes.next(this.route);
+  }
+
+  signInUser(email: string, password: string) {
+    this.auth.signInWithEmailAndPassword(email, password).then(
+      (authToken) => {
+        console.log('Sign in successful');
+        this.authToken = authToken;
+      },
+      (error) => {
+        console.log('sign in error', error);
+      }
+    );
+  }
+
+  signOutUser() {
+    this.auth.signOut();
+  }
+
+  getUserCollection(): Observable<any> {
+    console.log('Fetching with', `dogs/${this.authToken.user.uid}/dogs`);
+    const dogs = `dogs/${this.authToken.user.uid}/dogs`;
+    const userCollection = this.firestore.collection(dogs);
+    return userCollection.valueChanges({ idField: 'name' });
   }
 }
