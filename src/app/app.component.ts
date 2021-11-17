@@ -44,28 +44,4 @@ export class AppComponent {
     console.log(`App Event: ${$event.geometry.location}`);
     this.address = $event.geometry.location;
   }
-
-  signIn() {
-    console.log('Signing In');
-    this.dataService.signInUser('elliotpedley@gmail.com', 'router');
-  }
-
-  getData() {
-    console.log('Fetching data');
-    this.dataService
-      .getUserCollection()
-      .subscribe((data) => (this.data = data));
-  }
-
-  openDialog(data: any): void {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      width: '250px',
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      console.log('result', result);
-    });
-  }
 }

@@ -1,1 +1,17 @@
+:host {
+  overflow: hidden;
+}
 
+.menu__login {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu__login--button {
+  margin-top: 5px;
+  align-self: center;
+  width: 100%;
+}

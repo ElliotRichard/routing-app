@@ -36,11 +36,23 @@ export class SignInComponent implements OnInit {
   passwordFormControl = new FormControl('', [Validators.required]);
   instantErrorMatcher = new instantErrorStateMatcher();
   hidePassword = true;
+  authenticated = false;
   constructor(private data: FireBaseService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.data.authenticationStatus.subscribe(
+      (auth) => (this.authenticated = auth)
+    );
+  }
 
-  onSubmit() {
-    // this.passwordFormControl.value
+  onSubmit(): void {
+    this.data.signInUser(
+      this.emailFormControl.value,
+      this.passwordFormControl.value
+    );
+  }
+
+  signOut(): void {
+    console.log('User signing out');
   }
 }

@@ -1,5 +1,8 @@
-<ng-template elementHost (authentication)="$event? authenticated = true : authenticated = false"></ng-template>
+<p>User Access Works</p>
+<!-- <ng-template elementHost *ngIf="!authenticated" (authentication)="$event? authenticated = true : authenticated = false"> -->
+<!-- </ng-template> -->
 <ng-container *ngIf="authenticated">
-  <p>Edit Dogs</p>
-  <p>Add saved route</p>
+  <button mat-raised-button (click)="openDialog()">Show Dogs</button>
 </ng-container>
+
+<!-- $event? authenticated = true : authenticated = false -->
