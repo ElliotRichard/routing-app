@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { FireBaseService } from '../firebase.service';
+import { FireBaseService } from '../../../services/firebase.service';
 
 export class instantErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -40,9 +40,10 @@ export class SignInComponent implements OnInit {
   constructor(private data: FireBaseService) {}
 
   ngOnInit(): void {
-    this.data.authenticationStatus.subscribe(
-      (auth) => (this.authenticated = auth)
-    );
+    this.data.authenticationStatus.subscribe((auth) => {
+      this.authenticated = auth;
+      this.authentication.emit(auth);
+    });
   }
 
   onSubmit(): void {

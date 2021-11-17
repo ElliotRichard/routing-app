@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewContainerRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ElementHostDirective } from 'src/app/shared/element-host.directive';
-import { FireBaseService } from '../firebase.service';
+import { FireBaseService } from '../../../services/firebase.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
@@ -16,17 +15,8 @@ export class UserAccessComponent implements OnInit {
   authenticated = false;
   constructor(private data: FireBaseService, public dialog: MatDialog) {}
 
-  ngOnInit(): void {
-    // this.loadSignIn();
-  }
-  loadSignIn() {
-    import('../user.module').then(({ UserModule }) => {
-      // const viewContainerRef = this.userAccessHost.viewContainerRef;
-      // viewContainerRef.clear();
-      // const signInComponent = UserModule.getSignInComponent();
-      // viewContainerRef.createComponent(signInComponent);
-    });
-  }
+  ngOnInit(): void {}
+  loadSignIn() {}
   openDialog() {
     this.dialog.open(UserDialogComponent);
   }

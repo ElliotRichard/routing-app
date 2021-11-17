@@ -3,7 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from './services/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UserDialogComponent } from './modules/user/user-dialog/user-dialog.component';
+import { UserDialogComponent } from './components/user/user-dialog/user-dialog.component';
 
 export interface DialogData {
   animals: string[];

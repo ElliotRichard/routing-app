@@ -53,7 +53,9 @@ export class DataService {
   plotRoute() {
     console.log(`Start: ${this.route.start} End: ${this.route.end}`);
     if (this.waypointComponentAmount !== 0) {
-      this.route.waypoints = Array.from(this.waypointMap.values());
+      let addresses = Array.from(this.waypointMap.values());
+      this.addressList.next(addresses);
+      this.route.waypoints = addresses;
       console.log('Route WayPoints', this.route.waypoints);
     }
     this.routes.next(this.route);

@@ -1,6 +1,5 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
   OnInit,
   TemplateRef,
@@ -8,15 +7,13 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ElementHostDirective } from 'src/app/shared/element-host.directive';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit, AfterViewChecked {
+export class MenuComponent implements OnInit {
   // @ViewChild('userAccessHost', { read: ViewContainerRef })
   @ViewChildren('userAccessHost', { read: TemplateRef })
   _template: TemplateRef<any>;
@@ -25,14 +22,18 @@ export class MenuComponent implements OnInit, AfterViewChecked {
   // userAccessHost: ViewContainerRef;
   // elementHost!: ElementHostDirective;
   // public componentPlaceholder: ViewContainerRef;
+  loggedIn = false;
   showUserAccess = false;
   viewInitialized = false;
   constructor() {}
 
   ngOnInit(): void {}
-  ngAfterViewChecked(): void {
-    this.viewInitialized = true;
-    console.log('showUserAccess:', this.showUserAccess);
+  authenticationStatus($event) {
+    console.log('authenticationStatus', $event);
+    this.loggedIn = !!$event;
+  }
+  signOut() {
+    console.log('Let me out!');
   }
   loadUserAccessComponent() {
     if (this.viewInitialized) {

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from '../../../app.component';
-import { FireBaseService } from '../firebase.service';
+import { FireBaseService } from '../../../services/firebase.service';
 export interface fireBaseDog {
   name: string;
   address: string;
