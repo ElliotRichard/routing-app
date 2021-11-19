@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 // FireBase
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  DocumentReference,
+} from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { IFireBaseDog } from '../types';
 @Injectable({
   providedIn: 'root',
 })
@@ -32,9 +36,14 @@ export class FireBaseService {
     this.auth.signOut();
   }
 
-  addDog(dog: any): void {
+  addDog(dog: IFireBaseDog): void {
     const dogs = `dogs/${this.authToken.user.uid}/dogs`;
-    this.firestore.collection(dogs).add(dog);
+    this.firestore.collection(dogs).doc(dog.name).set({
+      address: dog.address,
+      coordinates: dog.coordinates,
+      owner: dog.owner,
+      notes: dog.notes,
+    });
   }
 
   getUserCollection(): Observable<any> {

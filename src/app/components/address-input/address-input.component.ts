@@ -40,6 +40,8 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       case RouteStop.END:
         this.icon = 'map';
         break;
+      case RouteStop.NONROUTE:
+        this.icon = 'map';
     }
   }
 

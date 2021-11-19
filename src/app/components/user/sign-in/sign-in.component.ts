@@ -53,6 +53,23 @@ export class SignInComponent implements OnInit {
     );
   }
 
+  keytab($event) {
+    let event: Event = $event as Event;
+    let targetElement: HTMLElement = event.target as HTMLElement;
+    let formElement = targetElement as any;
+    let sibling = formElement.form[1] as HTMLElement;
+    console.log('form target');
+    console.log(targetElement);
+    console.log('form sibling');
+    console.log(sibling); // get the sibling element
+    if (sibling == null)
+      // check if its null
+      return;
+    else {
+      sibling.focus();
+    } // focus if not null
+  }
+
   signOut(): void {
     console.log('User signing out');
   }

@@ -9,7 +9,7 @@
     </button>
     <mat-menu #menu="matMenu">
       <ng-template matMenuContent>
-        <app-menu (click)="$event.stopPropagation()"></app-menu>
+        <app-menu (click)="$event.stopPropagation()" (keydown.tab)="$event.stopPropagation()"></app-menu>
       </ng-template>
 
     </mat-menu>

@@ -4,3 +4,19 @@
   height: 100%;
   max-height: 90vh;
 }
+
+mat-form-field {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: nowrap;
+  // height:
+}
+
+.footer button {
+  flex-grow: 0.2;
+}
