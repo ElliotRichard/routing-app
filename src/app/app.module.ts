@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // Firebase
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -36,6 +37,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { environment } from '../environments/environment';
 // Services
 import { FireBaseService } from './services/firebase.service';
+import { AddressPipe } from './pipes/address.pipe';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { FireBaseService } from './services/firebase.service';
     UserAccessComponent,
     SignInComponent,
     UserDialogComponent,
+    AddressPipe,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -70,6 +73,7 @@ import { FireBaseService } from './services/firebase.service';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatTooltipModule,
     NoopAnimationsModule,
     ReactiveFormsModule,
     ReactiveFormsModule,

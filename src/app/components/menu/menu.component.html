@@ -1,7 +1,7 @@
-<ng-container *ngIf="!loggedIn">
-  <app-sign-in (authentication)="authenticationStatus($event)"></app-sign-in>
+<ng-container *ngIf="!userSignedIn">
+  <app-sign-in (authentication)="signedIn($event)"></app-sign-in>
 </ng-container>
-<ng-container *ngIf="loggedIn">
+<ng-container *ngIf="userSignedIn">
   <button mat-raised-button (click)="signOut()">Sign Out</button>
   <app-user-access></app-user-access>
 </ng-container>

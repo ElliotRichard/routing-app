@@ -1,5 +1,4 @@
 import { DataService } from '../../services/data.service';
-
 import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
 import { IRoute } from '../../types';
 
@@ -11,11 +10,11 @@ import { IRoute } from '../../types';
 export class MapComponent implements OnInit {
   @Input() center;
   @ViewChild('mapRef', { static: true }) mapElement: ElementRef;
+  public showFooter = false;
   private directionsService = new google.maps.DirectionsService();
   private directionsRenderer = new google.maps.DirectionsRenderer();
-  map;
-  markers = [];
-  showFooter = false;
+  private map;
+  private markers = [];
 
   constructor(private dataService: DataService) {}
 
@@ -25,7 +24,11 @@ export class MapComponent implements OnInit {
       window.document.querySelector('.directionsPanel')
     );
     this.directionsRenderer.setMap(this.map);
-
+    this.dataService
+      .$getDirectionsPanelElement()
+      .subscribe((element: string) => {
+        this.directionsRenderer.setPanel(null);
+      });
     this.dataService.routes.subscribe((newRoute: IRoute) => {
       this.showFooter = true;
       let waypoints = [];
@@ -54,7 +57,7 @@ export class MapComponent implements OnInit {
         }
       );
     });
-    this.dataService.center.subscribe((center) => {
+    this.dataService.$getMapCenter().subscribe((center) => {
       this.map.setCenter(center);
       let marker = new google.maps.Marker({ map: this.map });
       marker.setPosition(center);

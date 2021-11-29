@@ -1,25 +1,56 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-  <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-    <th mat-header-cell *matHeaderCellDef>
-      {{column.header}}
-    </th>
-    <td mat-cell *matCellDef="let row">
-      {{column.cell(row)}}
-      <ng-container *ngIf="column.columnDef === 'action'">
-        <mat-icon>delete_outline</mat-icon>
-      </ng-container>
-    </td>
-    <td mat-footer-cell *matFooterCellDef>
-      <ng-container *ngIf="!(column.columnDef === 'action')" class="footer">
-        <input matInput type="text" [(ngModel)]="newDog[column.columnDef]">
-      </ng-container>
-    </td>
-  </ng-container>
+<mat-dialog-content>
+  <table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+      <th mat-header-cell *matHeaderCellDef>
+        {{column.header}}
+      </th>
+      
+      <td mat-cell *matCellDef="let row">
+        <ng-container [ngSwitch]="column.columnDef">
+          <ng-container *ngSwitchCase="'action'">
+            <mat-icon matTooltip="Delete Dog record" [matTooltipPosition]="'above'"
+              (click)="deleteDog(column.cell(row))">
+              delete_outline</mat-icon>
+            <mat-icon matTooltip="Add Dog to Route" [matTooltipPosition]="'below'"
+              (click)="addDogToRoute(column.cell(row))">add</mat-icon>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            {{column.cell(row)}}
+          </ng-container>
+        </ng-container>
+      </td>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      <td mat-footer-cell *matFooterCellDef>
+        <ng-container class="footer" [ngSwitch]="column.columnDef">
+          <ng-container *ngSwitchCase="'address'">
+            <app-address-input id="addressInput" #addressInput (address)="addressSet($event)">
+            </app-address-input>
+          </ng-container>
+          <ng-container *ngSwitchCase="'action'">
+            <mat-icon *ngIf="newDogForm.valid" (click)="addDog()">library_add</mat-icon>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <form [formGroup]="newDogForm">
+              <mat-form-field [color]="newDogForm.controls[column.columnDef].valid ? 'primary': 'warn'"
+                appearance="outline">
+                <input matInput type="text" formControlName="{{column.columnDef}}" placeholder="{{column.columnDef}}"
+                  [errorStateMatcher]="instantErrorMatcher">
+                <mat-error *ngIf="newDogForm.controls[column.columnDef].hasError('required')">
+                  {{column.columnDef | titlecase}} is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="newDogForm.controls[column.columnDef].hasError('notUnique')">
+                  Name must be <strong>unique</strong>
+                </mat-error>
+              </mat-form-field>
+            </form>
+          </ng-container>
+        </ng-container>
+      </td>
+    </ng-container>
 
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 
-<button mat-raised-button (click)="addDog()">Add Dog</button>
+  </table>
+</mat-dialog-content>

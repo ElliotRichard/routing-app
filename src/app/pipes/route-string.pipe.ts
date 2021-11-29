@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { RouteStop } from '../types';
+import { ROUTE } from '../types';
 @Pipe({
   name: 'routeString',
 })
 export class RouteStringPipe implements PipeTransform {
-  transform(value: RouteStop, ...args: unknown[]): string {
+  transform(value: ROUTE, ...args: unknown[]): string {
     switch (value) {
-      case RouteStop.START:
+      case ROUTE.START:
         return 'START';
-      case RouteStop.WAYPOINT:
+      case ROUTE.WAYPOINT:
         return 'DOG ADDRESS';
-      case RouteStop.END:
+      case ROUTE.END:
         return 'DESTINATION';
       default:
         return value.toString();

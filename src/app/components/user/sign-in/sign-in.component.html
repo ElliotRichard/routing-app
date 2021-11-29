@@ -2,7 +2,7 @@
   <mat-form-field appearance="outline">
     <mat-label>Email</mat-label>
     <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="instantErrorMatcher"
-      placeholder="Ex. pat@example.com" (keyup.tab)="keytab($event)" #emailInput>
+      placeholder="Ex. pat@example.com" (keyup.tab)="nextField($event)" #emailInput>
     <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
       Please enter a valid email address
     </mat-error>
@@ -22,7 +22,7 @@
       Please enter your password
     </mat-error>
     <mat-error *ngIf="passwordFormControl.hasError('required')">
-      Email is <strong>required</strong>
+      Password is <strong>required</strong>
     </mat-error>
   </mat-form-field>
   <button mat-raised-button>Sign In</button>

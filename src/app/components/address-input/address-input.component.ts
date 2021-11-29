@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { RouteStop } from '../../types';
+import { ROUTE } from '../../types';
 
 @Component({
   selector: 'app-address-input',
@@ -17,36 +17,33 @@ import { RouteStop } from '../../types';
 })
 export class AddressInputComponent implements OnInit, AfterViewInit {
   @Output() address: EventEmitter<any> = new EventEmitter();
-  @ViewChild('addressInput') addressText: any;
-  @Input() type: RouteStop;
-  addressType: string = 'address';
-  currentWaypoint?: any;
-  waypointComponentIndex?: number;
-  autocompleteInput: string;
-  queryWait: boolean;
-  icon: string;
+  @ViewChild('addressInput') addressForm: any;
+  @Input() type: ROUTE | null;
+  private waypointComponentIndex?: number;
+  public icon: string;
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
     switch (this.type) {
-      case RouteStop.WAYPOINT:
+      case ROUTE.WAYPOINT:
         this.waypointComponentIndex =
           this.dataService.createWaypointComponent();
         this.icon = 'dog';
         break;
-      case RouteStop.START:
+      case ROUTE.START:
         this.icon = 'place';
         break;
-      case RouteStop.END:
+      case ROUTE.END:
         this.icon = 'map';
         break;
-      case RouteStop.NONROUTE:
+      default:
+      case ROUTE.NONROUTE:
         this.icon = 'map';
     }
   }
 
   ngAfterViewInit() {
-    this.addressText.nativeElement.focus();
+    this.addressForm.nativeElement.focus();
     this.setAddress();
   }
 
@@ -62,7 +59,7 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
         { lng: 175.1495361328125, lat: -41.01099329360267 }
       );
     const autocomplete = new google.maps.places.Autocomplete(
-      this.addressText.nativeElement,
+      this.addressForm.nativeElement,
       {
         bounds: outerWellingtonBounds,
         componentRestrictions: { country: 'NZ' },
@@ -73,7 +70,7 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
     google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const place = autocomplete.getPlace();
       this.addressSet(place);
-      if (this.type === RouteStop.WAYPOINT) {
+      if (this.type === ROUTE.WAYPOINT) {
         this.dataService.addRoute(
           place,
           this.type,
@@ -82,8 +79,8 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       } else this.dataService.addRoute(place, this.type);
     });
   }
-  addressSet(place: any) {
+  addressSet(place: google.maps.places.PlaceResult) {
     this.address.emit(place);
-    this.dataService.setCenter(place);
+    this.dataService.setMapCenter(place);
   }
 }

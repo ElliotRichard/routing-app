@@ -40,37 +40,37 @@ export class SignInComponent implements OnInit {
   constructor(private data: FireBaseService) {}
 
   ngOnInit(): void {
-    this.data.authenticationStatus.subscribe((auth) => {
-      this.authenticated = auth;
-      this.authentication.emit(auth);
+    this.data.authenticationStatus.subscribe((isSignedIn) => {
+      this.authenticated = isSignedIn;
+      this.authentication.emit(isSignedIn);
     });
   }
 
   onSubmit(): void {
-    this.data.signInUser(
-      this.emailFormControl.value,
-      this.passwordFormControl.value
-    );
+    if (
+      this.emailFormControl.value.length < 1 ||
+      this.passwordFormControl.value.length < 1
+    ) {
+      console.log('using auto auth values');
+      this.data.signInUser('elliotpedley@gmail.com', 'router');
+    } else {
+      this.data.signInUser(
+        this.emailFormControl.value,
+        this.passwordFormControl.value
+      );
+    }
   }
 
-  keytab($event) {
+  nextField($event) {
     let event: Event = $event as Event;
     let targetElement: HTMLElement = event.target as HTMLElement;
     let formElement = targetElement as any;
     let sibling = formElement.form[1] as HTMLElement;
-    console.log('form target');
-    console.log(targetElement);
-    console.log('form sibling');
-    console.log(sibling); // get the sibling element
     if (sibling == null)
       // check if its null
       return;
     else {
       sibling.focus();
     } // focus if not null
-  }
-
-  signOut(): void {
-    console.log('User signing out');
   }
 }

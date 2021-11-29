@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Observable } from 'rxjs';
+import { IDog } from 'src/app/types';
 
 @Component({
   selector: 'app-side-bar',
@@ -9,8 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class SideBarComponent implements OnInit {
   addressList: Observable<any>;
-
   sideBarDisplay = 'route-input';
+  databaseRoutes: IDog[] = [];
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
@@ -21,5 +22,6 @@ export class SideBarComponent implements OnInit {
   }
   newRoute() {
     this.sideBarDisplay = 'route-input';
+    this.dataService.clearRoute();
   }
 }

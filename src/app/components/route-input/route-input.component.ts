@@ -1,4 +1,3 @@
-import { DataService } from '../../services/data.service';
 import {
   Component,
   OnInit,
@@ -7,7 +6,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { RouteStop } from '../../types';
+import { DataService } from '../../services/data.service';
+import { ROUTE, IRouteLocation, IDogLocation } from '../../types';
+
 @Component({
   selector: 'app-route-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,29 +17,23 @@ import { RouteStop } from '../../types';
 })
 export class RouteInputComponent implements OnInit {
   @Output() routeAdded: EventEmitter<any> = new EventEmitter();
+  public addresses: any[] = [{ type: ROUTE.START }, { type: ROUTE.END }];
+  public componentType: ROUTE = ROUTE.WAYPOINT;
+  public showAddWaypoint = false;
+  public showFindRoute = false;
   private addressCount = 0;
-  addresses: number[] = [RouteStop.START, RouteStop.END];
-  displayFooter = 'none';
-  componentType: RouteStop = RouteStop.WAYPOINT;
-  showAddWaypoint = false;
-  showFindRoute = false;
+
   constructor(
     private dataService: DataService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.dataService.center.subscribe((newCenter) => {
-      console.log('newCenter at addressInput');
-      // this.displayFooter = 'flex';
-    });
-    this.dataService.routeAdded.subscribe((routeAdded) => {
-      console.log('route-input: route added');
-      // this.showAddWaypoint = true;
-    });
+    this.dataService
+      .$getDogsForRoute()
+      .subscribe((dog: IDogLocation) => this.addDatabaseLocation(dog));
   }
-  addressSet($address) {
-    console.log('route-input: addressSet()', $address);
+  routeLocationAdded(): void {
     this.addressCount++;
     if (this.addressCount >= this.addresses.length) {
       this.showAddWaypoint = true;
@@ -46,12 +41,22 @@ export class RouteInputComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
     }
   }
-  addRouteWaypoint() {
-    this.addresses.push(RouteStop.WAYPOINT);
+
+  addressSet($address): void {
+    this.routeLocationAdded();
+  }
+  addRouteWaypoint(): void {
+    this.addresses.push({ type: ROUTE.WAYPOINT } as IRouteLocation);
     this.showAddWaypoint = false;
   }
-  getRoute() {
+  addDatabaseLocation(dog: IDogLocation): void {
+    this.addresses.push(dog);
+    this.changeDetectorRef.detectChanges();
+    this.routeLocationAdded();
+  }
+  getRoute(): void {
     this.routeAdded.emit(true);
     this.dataService.plotRoute();
   }
+  
 }

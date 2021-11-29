@@ -1,7 +1,7 @@
 <form class="addressInputForm">
-  <mat-form-field class="addressInputForm--field" appearance="fill">
+  <mat-form-field class="addressInputForm--field" appearance="outline">
     <mat-label>{{type | routeString | titlecase }} </mat-label>
     <input #addressInput name="{{type | routeString | titlecase}}" matInput placeholder="Ex. 200 Aro st" value="" />
     <mat-icon class="addressInputForm__icon" matSuffix>{{icon}}</mat-icon>
   </mat-form-field>
-</form>
+</form> 

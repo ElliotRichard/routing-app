@@ -1,10 +1,19 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { tap } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { DialogData } from '../../../app.component';
 import { FireBaseService } from '../../../services/firebase.service';
-import { IFireBaseDog } from '../../../types';
+import { ICoordinate, IDog } from '../../../types';
+import { instantErrorStateMatcher } from '../sign-in/sign-in.component';
 
 @Component({
   selector: 'app-user-dialog',
@@ -12,67 +21,131 @@ import { IFireBaseDog } from '../../../types';
   styleUrls: ['./user-dialog.component.scss'],
 })
 export class UserDialogComponent implements OnInit {
-  dogs: any;
-  columns = [
+  @ViewChild('addressInput') addressInput;
+  public columns = [
     {
       columnDef: 'name',
       header: 'Name',
-      cell: (dog: IFireBaseDog) => `${dog.name}`,
+      cell: (dog: IDog) => `${dog.name}`,
     },
     {
       columnDef: 'address',
       header: 'Address',
-      cell: (dog: IFireBaseDog) => `${dog.address}`,
+      cell: (dog: IDog) => `${dog.address}`,
     },
     {
       columnDef: 'owner',
       header: 'Owner',
-      cell: (dog: IFireBaseDog) => `${dog.owner}`,
+      cell: (dog: IDog) => `${dog.owner}`,
     },
 
     {
       columnDef: 'notes',
       header: 'Notes',
-      cell: (dog: IFireBaseDog) => `${dog.notes}`,
+      cell: (dog: IDog) => `${dog.notes}`,
     },
     {
       columnDef: 'action',
       header: 'Action',
-      cell: (dog: IFireBaseDog) => ``,
+      cell: (dog: IDog): IDog => dog,
     },
   ];
-  newDog: IFireBaseDog = {
-    name: '',
-    address: '',
-    coordinates: '',
-    owner: '',
-    notes: '',
-  };
-  name = new FormControl('', [Validators.required]);
-  address = new FormControl('', [Validators.required]);
-  owner = new FormControl('', [Validators.required]);
-  notes = new FormControl('');
-  dataSource;
-  displayedColumns = this.columns.map((c) => c.columnDef);
+  public instantErrorMatcher = new instantErrorStateMatcher();
+  public dataSource;
+  public newDogForm: FormGroup;
+  public displayedColumns = this.columns.map((c) => c.columnDef);
+  private coordinates: ICoordinate;
+  private dogNames: string[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UserDialogComponent>,
     private fireBase: FireBaseService,
     public dataService: DataService
   ) {
-    this.dataSource = this.fireBase.getUserCollection();
+    this.newDogForm = this.formBuilder.group({
+      name: ['', Validators.required, this.checkUniqueName()],
+      address: ['', this.checkValidAddress()],
+      owner: ['', Validators.required],
+      notes: [''],
+    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dataSource = this.fireBase.getUserCollection().pipe(
+      tap((collection) => {
+        this.dogNames = collection.map(({ name }) => name);
+      })
+    );
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  addDog(): void {
-    console.log('Adding', this.newDog);
+  addressSet($event) {
+    let place = $event as google.maps.places.PlaceResult;
+    this.coordinates = place.geometry.location.toJSON();
+    let addresses: string[] = [];
+    place.address_components.forEach((component) => {
+      addresses.push(component.long_name);
+    });
+    let address = addresses.join(',').replace(',', ' ');
+    this.newDogForm.controls.address.setValue(address);
+  }
 
-    this.fireBase.addDog(this.newDog);
-    this.newDog = {} as IFireBaseDog;
+  checkUniqueName(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !this.dogNames.includes(control.value)
+        ? null
+        : { notUnique: true };
+    };
+  }
+
+  checkValidAddress(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return this.coordinates && this.coordinates.lat && this.coordinates.lng
+        ? null
+        : { required: true };
+    };
+  }
+
+  addDog(): void {
+    let newDog: IDog = {
+      name: this.newDogForm.controls.name.value,
+      address: this.newDogForm.controls.address.value,
+      coordinates: this.coordinates,
+      owner: this.newDogForm.controls.owner.value,
+      notes: this.newDogForm.controls.notes.value,
+    };
+    if (
+      this.newDogForm.controls.name.valid &&
+      this.newDogForm.controls.address.valid &&
+      this.coordinates.lat &&
+      this.coordinates.lng
+    ) {
+      this.fireBase.addDog(newDog);
+      this.clearNewDogForm();
+    } else {
+      console.log(
+        `Can't Add Dog: name: ${this.newDogForm.controls.name.valid} address: ${this.newDogForm.controls.address.valid} lat: ${this.coordinates.lat} long: ${this.coordinates.lng}`
+      );
+    }
+  }
+
+  private clearNewDogForm() {
+    this.newDogForm.controls.name.setValue('');
+    this.newDogForm.controls.owner.setValue('');
+    this.newDogForm.controls.notes.setValue('');
+    this.addressInput.addressText.nativeElement.innerText = '';
+    this.newDogForm.markAsUntouched;
+  }
+
+  deleteDog(dog: IDog | string): void {
+    this.fireBase.deleteDog(dog as IDog);
+  }
+
+  addDogToRoute(dog: IDog | string): void {
+    this.dataService.addDogToRoute(dog as IDog);
   }
 }

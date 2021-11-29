@@ -1,6 +1,18 @@
-<ng-container class="route-input__inputs" *ngFor="let routeType of addresses">
-  <app-address-input class="inputs__input" [type]="routeType" (address)="addressSet($event)">
-  </app-address-input>
+<ng-container class="route-input__inputs" *ngFor="let routeLocation of addresses">
+  <ng-container [ngSwitch]="routeLocation.type">
+    <!-- 3 is ROUTE.NONE; for database dogs -->
+    <ng-container *ngSwitchCase="3">
+      <div class="route-input__inputs_dog">
+        <span class="dog--name">{{routeLocation.name}}</span>
+        <span class="dog--address">{{routeLocation.address | address: 'suburb'}}</span>
+        <span class="dog--owner">{{routeLocation.owner}}</span>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <app-address-input class="address_input" [type]="routeLocation.type" (address)="addressSet($event)">
+      </app-address-input>
+    </ng-container>
+  </ng-container>
 </ng-container>
 
 <div class="route-input__addWaypoint displayNone" [ngClass]="{'displayFlex': showAddWaypoint}">

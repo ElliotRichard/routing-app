@@ -1,15 +1,17 @@
 <div class="side-bar" [ngSwitch]="sideBarDisplay">
   <!-- Google Maps Directions get displayed here when a route is found -->
   <div class="directionsPanel"></div>
-
-  <!-- <ng-container *ngSwitchCaseDefault> -->
   <ng-container *ngSwitchCase="'route-input'">
     <div class="side-bar__route-input">
       <app-route-input (routeAdded)="routeAdded($event)"></app-route-input>
     </div>
   </ng-container>
+  <ng-container *ngFor="let dog for databaseRoutes">
+    {{dog| json}}
+  </ng-container>
 
   <ng-container *ngSwitchCase="'address-list'">
+
     <mat-selection-list #addresses>
       <mat-list-option *ngFor="let address of addressList | async">
         <mat-icon svgIcon="dog" matListIcon></mat-icon>
