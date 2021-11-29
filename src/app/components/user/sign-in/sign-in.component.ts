@@ -37,10 +37,10 @@ export class SignInComponent implements OnInit {
   instantErrorMatcher = new instantErrorStateMatcher();
   hidePassword = true;
   authenticated = false;
-  constructor(private data: FireBaseService) {}
+  constructor(private firebase: FireBaseService) {}
 
   ngOnInit(): void {
-    this.data.authenticationStatus.subscribe((isSignedIn) => {
+    this.firebase.authenticationStatus.subscribe((isSignedIn) => {
       this.authenticated = isSignedIn;
       this.authentication.emit(isSignedIn);
     });
@@ -52,9 +52,8 @@ export class SignInComponent implements OnInit {
       this.passwordFormControl.value.length < 1
     ) {
       console.log('using auto auth values');
-      this.data.signInUser('elliotpedley@gmail.com', 'router');
     } else {
-      this.data.signInUser(
+      this.firebase.signInUser(
         this.emailFormControl.value,
         this.passwordFormControl.value
       );

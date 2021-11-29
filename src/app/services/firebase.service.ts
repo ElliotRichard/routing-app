@@ -45,6 +45,7 @@ export class FireBaseService {
 
   signOutUser(): void {
     this.auth.signOut();
+    this.authenticationStatus.next(false);
   }
 
   addDog(dog: IDog): void {
