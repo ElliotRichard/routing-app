@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { tap } from 'rxjs';
+import { tap, map } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { DialogData } from '../../../app.component';
 import { FireBaseService } from '../../../services/firebase.service';
@@ -64,7 +64,7 @@ export class UserDialogComponent implements OnInit {
     public dataService: DataService
   ) {
     this.newDogForm = this.formBuilder.group({
-      name: ['', Validators.required, this.checkUniqueName()],
+      name: ['', Validators.required],
       address: ['', this.checkValidAddress()],
       owner: ['', Validators.required],
       notes: [''],
@@ -72,11 +72,12 @@ export class UserDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = this.fireBase.getUserCollection().pipe(
+    this.fireBase.getUserCollection().pipe(
+      map((collection) => this.dataSource = collection),
       tap((collection) => {
         this.dogNames = collection.map(({ name }) => name);
       })
-    );
+    ).subscribe();
   }
 
   onNoClick(): void {
@@ -96,9 +97,9 @@ export class UserDialogComponent implements OnInit {
 
   checkUniqueName(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      return !this.dogNames.includes(control.value)
-        ? null
-        : { notUnique: true };
+      return this.dogNames.includes(control.value)
+        ? { notUnique: true}
+        :  null;
     };
   }
 
@@ -118,6 +119,7 @@ export class UserDialogComponent implements OnInit {
       owner: this.newDogForm.controls.owner.value,
       notes: this.newDogForm.controls.notes.value,
     };
+    
     if (
       this.newDogForm.controls.name.valid &&
       this.newDogForm.controls.address.valid &&
@@ -128,7 +130,7 @@ export class UserDialogComponent implements OnInit {
       this.clearNewDogForm();
     } else {
       console.log(
-        `Can't Add Dog: name: ${this.newDogForm.controls.name.valid} address: ${this.newDogForm.controls.address.valid} lat: ${this.coordinates.lat} long: ${this.coordinates.lng}`
+        `Can't Add Dog: ${this.newDogForm.controls.name.value}: ${this.newDogForm.controls.name.valid} address: ${this.newDogForm.controls.address.valid} lat: ${this.coordinates.lat} long: ${this.coordinates.lng}`
       );
     }
   }

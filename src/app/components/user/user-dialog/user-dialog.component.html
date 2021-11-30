@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table *ngIf="dataSource.length > 0" [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
       <th mat-header-cell *matHeaderCellDef>
         {{column.header}}
@@ -27,7 +27,7 @@
             </app-address-input>
           </ng-container>
           <ng-container *ngSwitchCase="'action'">
-            <mat-icon *ngIf="newDogForm.valid" (click)="addDog()">library_add</mat-icon>
+            <mat-icon (click)="addDog()">library_add</mat-icon>
           </ng-container>
           <ng-container *ngSwitchDefault>
             <form [formGroup]="newDogForm">
