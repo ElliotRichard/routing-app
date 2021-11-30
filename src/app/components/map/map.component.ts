@@ -27,7 +27,11 @@ export class MapComponent implements OnInit {
     this.dataService
       .$getDirectionsPanelElement()
       .subscribe((element: string) => {
-        this.directionsRenderer.setPanel(null);
+        if (element == null) {
+          this.directionsRenderer.setMap(null);
+          this.showFooter = false;
+        } else this.directionsRenderer.setMap(this.map);
+        this.directionsRenderer.setPanel(window.document.querySelector(element));
       });
     this.dataService.routes.subscribe((newRoute: IRoute) => {
       this.showFooter = true;
@@ -53,7 +57,7 @@ export class MapComponent implements OnInit {
         },
         (response) => {
           this.directionsRenderer.setDirections(response);
-          this.getDistance(response);
+          this.dataService.addressList.next(this.getRouteDetails(response));
         }
       );
     });
@@ -66,29 +70,28 @@ export class MapComponent implements OnInit {
     });
   }
 
-  getDistance(response: google.maps.DirectionsResult) {
+  getRouteDetails(response: google.maps.DirectionsResult): string[] {
     let total = 0;
     let time = 0;
-    let addresses = [];
+    let waypointAddresses: string[] = [];
     const route = response.routes[0];
     const from = route.legs[0].start_address;
     const to = route.legs[route.legs.length - 1].end_address;
     for (let i = 0; i < route.legs.length; i++) {
       // Record route
-      addresses.push(route.legs[i].start_address);
+      waypointAddresses.push(route.legs[i].start_address);
       total += route.legs[i].distance.value;
       time += route.legs[i].duration.value;
     }
-    addresses.push(route.legs[route.legs.length - 1].end_address);
-    addresses.shift();
-    addresses.pop();
-    this.dataService.addressList.next(addresses);
+    // Remove start point (not a waypoint)
+    waypointAddresses.shift();
     time = time / 60;
     total = total / 1000;
     document.getElementById('from').innerHTML =
-      from.split(',')[0] + '-' + to.split(',')[0];
+      from.split(',')[0] + ' to ' + to.split(',')[0];
     document.getElementById('duration').innerHTML = Math.round(time) + 'm';
     document.getElementById('total').innerHTML = Math.round(total) + 'KM';
+    return waypointAddresses;
   }
 
   loadMap() {
