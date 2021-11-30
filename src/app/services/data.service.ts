@@ -7,7 +7,6 @@ import {
   IDogLocationFactory,
 } from '../types';
 import { Subject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -15,17 +14,16 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
   private route: IRoute = {};
   private waypointMap: Map<number, any> = new Map();
-  private waypointComponentAmount: 0;
+  private waypointComponentAmount = 0;
   private dogsForRoute: Subject<IDogLocation> = new Subject<IDogLocation>();
   private center: Subject<any> = new Subject();
-  routes: Subject<IRoute> = new Subject();
-  addressList: Subject<any> = new Subject();
-  routeAdded: Subject<boolean> = new Subject();
-  addresses: string[] = [];
   private directionsPanelElement: Subject<string> = new Subject<string>();
-  constructor(private http: HttpClient) {}
+  routes: Subject<IRoute> = new Subject();
+  addressList: Subject<string[]> = new Subject<string[]>();
+  routeAdded: Subject<boolean> = new Subject();
+  constructor() {}
 
-  addRoute(place, type: ROUTE, wayPointIndex?: number) {
+  addRoute(place, type: ROUTE, wayPointIndex?: number): void {
     this.routeAdded.next(true);
     switch (type) {
       case ROUTE.START:
@@ -43,24 +41,23 @@ export class DataService {
     }
   }
 
-  createWaypointComponent() {
+  createWaypointComponent(): number {
     this.waypointComponentAmount++;
     return this.waypointComponentAmount;
   }
 
-  deleteWaypointComponent(index: number) {
+  deleteWaypointComponent(index: number): void {
     this.waypointMap.delete(index);
   }
 
-  plotRoute() {
+  plotRoute(): void {
     console.log(`Start: ${this.route.start} End: ${this.route.end}`);
     if (this.waypointComponentAmount !== 0) {
       let addresses = Array.from(this.waypointMap.values());
-     // this.addressList.next(addresses);
       this.route.waypoints = addresses;
-      console.log('Route WayPoints', this.route.waypoints);
     }
     this.routes.next(this.route);
+    this.directionsPanelElement.next('.directionsPanel')
   }
 
   addDogToRoute(dog: IDog): void {
@@ -77,9 +74,8 @@ export class DataService {
     return this.center;
   }
 
-  setMapCenter(place: any) {
+  setMapCenter(place: any): void {
     this.center.next(place.geometry.location);
-    this.addresses.push(place);
   }
 
   $getDogsForRoute(): Observable<IDogLocation> {
