@@ -51,3 +51,23 @@ export class IDogLocationFactory {
     } as IDogLocation;
   }
 }
+
+export class DirectionsRequestFactory {
+  private static formatWaypoints(waypoints: any[]| undefined): google.maps.DirectionsWaypoint[] {
+    return waypoints.map((wp) => {
+      return {
+        location: wp,
+        stopover: true,
+      }
+    }) as google.maps.DirectionsWaypoint[];
+  }
+  static createRequestFromIRoute(route: IRoute): google.maps.DirectionsRequest {
+    return {
+      origin: route.start,
+      destination: route.end,
+      waypoints: route.waypoints !?? this.formatWaypoints(route.waypoints),
+      optimizeWaypoints: true,
+      travelMode: google.maps.TravelMode.DRIVING,
+    } as google.maps.DirectionsRequest
+  }
+}

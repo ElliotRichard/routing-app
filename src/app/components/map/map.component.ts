@@ -1,6 +1,6 @@
 import { DataService } from '../../services/data.service';
 import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
-import { IRoute } from '../../types';
+import { IRoute, DirectionsRequestFactory } from '../../types';
 
 @Component({
   selector: 'app-map',
@@ -35,31 +35,13 @@ export class MapComponent implements OnInit {
       });
     this.dataService.routes.subscribe((newRoute: IRoute) => {
       this.showFooter = true;
-      let waypoints = [];
-      if (newRoute.waypoints) {
-        for (let waypoint of newRoute.waypoints) {
-          waypoints.push({
-            location: waypoint,
-            stopover: true,
-          });
-        }
-      }
-      for (let marker of this.markers) {
-        marker.setMap(null);
-      }
+      this.clearAllMarkersFromMap();
       this.directionsService.route(
-        {
-          origin: newRoute.start,
-          destination: newRoute.end,
-          waypoints: waypoints,
-          optimizeWaypoints: true,
-          travelMode: google.maps.TravelMode.DRIVING,
-        },
+        DirectionsRequestFactory.createRequestFromIRoute(newRoute),
         (response) => {
           this.directionsRenderer.setDirections(response);
           this.dataService.addressList.next(this.getRouteDetails(response));
-        }
-      );
+        });
     });
     this.dataService.$getMapCenter().subscribe((center) => {
       this.map.setCenter(center);
@@ -100,5 +82,11 @@ export class MapComponent implements OnInit {
       zoom: 8,
       disableDefaultUI: true,
     });
+  }
+  
+  clearAllMarkersFromMap() {
+    for (let marker of this.markers) {
+      marker.setMap(null);
+    }
   }
 }

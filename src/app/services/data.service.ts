@@ -56,6 +56,7 @@ export class DataService {
       let addresses = Array.from(this.waypointMap.values());
       this.route.waypoints = addresses;
     }
+    console.log(`date service: ${this.route.waypoints}`);
     this.routes.next(this.route);
     this.directionsPanelElement.next('.directionsPanel')
   }
