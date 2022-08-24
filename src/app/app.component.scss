@@ -19,6 +19,11 @@
   padding-left: 4vw;
 }
 
+.header__icon {
+  font-size: 36px;
+  margin-right: 1vw;
+}
+
 .map-container {
   @include exact-fit();
   display: flex;

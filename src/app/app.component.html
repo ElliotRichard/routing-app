@@ -2,8 +2,8 @@
   <h1 class="header__title">K9a-Finda</h1>
   <span class="header--spacer"></span>
   <ng-container class="header__menu">
-    <button mat-icon-button aria-label="menu-icon" [matMenuTriggerFor]="menu">
-      <mat-icon>menu</mat-icon>
+    <button mat-icon-button class="header__icon" aria-label="menu-icon" [matMenuTriggerFor]="menu">
+      <mat-icon [inline]="true">menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <ng-template matMenuContent>
