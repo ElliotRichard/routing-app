@@ -11,7 +11,7 @@ export interface DialogData {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss', './mixins.scss'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'routing-app';
@@ -27,6 +27,7 @@ export class AppComponent {
 
   constructor(
     public dialog: MatDialog,
+    // public dialog: MatDialog,
     private domSanitizer: DomSanitizer,
     private matIconRegistry: MatIconRegistry,
     private dataService: DataService
