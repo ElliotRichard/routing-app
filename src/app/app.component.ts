@@ -5,9 +5,6 @@ import { DataService } from './services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './components/user/user-dialog/user-dialog.component';
 
-export interface DialogData {
-  animals: string[];
-}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

@@ -5,7 +5,7 @@ import {
   IDog,
   IDogLocation,
   IDogLocationFactory,
-} from '../types';
+} from '../../shared/types';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable({

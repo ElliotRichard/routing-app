@@ -5,7 +5,7 @@ import {
   AngularFirestore,
 } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { IDog } from '../types';
+import { IDog } from '../../shared/types';
 @Injectable({
   providedIn: 'root',
 })

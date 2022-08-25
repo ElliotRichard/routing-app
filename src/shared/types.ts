@@ -13,6 +13,8 @@ export interface IRoute {
   start?: any;
   end?: any;
   waypoints?: any[];
+  optimizeRoute?: boolean;
+  departureTime: any;
 }
 
 /**
@@ -36,7 +38,7 @@ export interface IRouteLocation {
   type: ROUTE;
 }
 
-export interface IDogLocation extends IDog, IRouteLocation {}
+export interface IDogLocation extends IDog, IRouteLocation { }
 
 export class IDogLocationFactory {
   static createFromIFireBaseDog(dog: IDog): IDogLocation {
@@ -53,8 +55,9 @@ export class IDogLocationFactory {
 }
 
 export class DirectionsRequestFactory {
-  private static formatWaypoints(waypoints: any[]| undefined): google.maps.DirectionsWaypoint[] {
+  private static formatWaypoints(waypoints: any[] | undefined): google.maps.DirectionsWaypoint[] {
     return waypoints.map((wp) => {
+      console.log('waypoint', wp);
       return {
         location: wp,
         stopover: true,
@@ -65,9 +68,16 @@ export class DirectionsRequestFactory {
     return {
       origin: route.start,
       destination: route.end,
-      waypoints: route.waypoints !?? this.formatWaypoints(route.waypoints),
-      optimizeWaypoints: true,
+      waypoints: this.formatWaypoints(route.waypoints),
+      optimizeWaypoints: route.optimizeRoute,
       travelMode: google.maps.TravelMode.DRIVING,
+      drivingOptions: {
+        departureTime: route.departureTime,
+      }
     } as google.maps.DirectionsRequest
   }
+}
+
+export interface DialogData {
+  animals: string[];
 }

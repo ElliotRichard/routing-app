@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Observable } from 'rxjs';
-import { IDog } from 'src/app/types';
+import { IDog } from 'src/shared/types';
 
 @Component({
   selector: 'app-side-bar',

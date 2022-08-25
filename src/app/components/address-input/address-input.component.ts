@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { ROUTE } from '../../types';
+import { ROUTE } from '../../../shared/types';
 
 @Component({
   selector: 'app-address-input',

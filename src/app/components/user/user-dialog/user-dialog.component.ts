@@ -10,9 +10,9 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap, map } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { DialogData } from '../../../app.component';
+import { DialogData } from '../../../../shared/types';
 import { FireBaseService } from '../../../services/firebase.service';
-import { ICoordinate, IDog } from '../../../types';
+import { ICoordinate, IDog } from '../../../../shared/types';
 import { instantErrorStateMatcher } from '../sign-in/sign-in.component';
 
 @Component({

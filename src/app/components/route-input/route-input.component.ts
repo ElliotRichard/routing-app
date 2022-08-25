@@ -7,7 +7,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { ROUTE, IRouteLocation, IDogLocation } from '../../types';
+import { ROUTE, IRouteLocation, IDogLocation } from '../../../shared/types';
+
 
 @Component({
   selector: 'app-route-input',

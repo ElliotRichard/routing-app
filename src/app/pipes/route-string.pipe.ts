@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ROUTE } from '../types';
+import { ROUTE } from '../../shared/types';
 @Pipe({
   name: 'routeString',
 })

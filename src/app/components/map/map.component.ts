@@ -1,7 +1,6 @@
 import { DataService } from '../../services/data.service';
 import { Component, ElementRef, ViewChild, OnInit, Input } from '@angular/core';
-import { IRoute, DirectionsRequestFactory } from '../../types';
-
+import { IRoute, DirectionsRequestFactory } from '../../../shared/types';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
