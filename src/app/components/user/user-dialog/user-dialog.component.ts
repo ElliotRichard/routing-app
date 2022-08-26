@@ -98,8 +98,8 @@ export class UserDialogComponent implements OnInit {
   checkUniqueName(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       return this.dogNames.includes(control.value)
-        ? { notUnique: true}
-        :  null;
+        ? { notUnique: true }
+        : null;
     };
   }
 
@@ -119,7 +119,7 @@ export class UserDialogComponent implements OnInit {
       owner: this.newDogForm.controls.owner.value,
       notes: this.newDogForm.controls.notes.value,
     };
-    
+
     if (
       this.newDogForm.controls.name.valid &&
       this.newDogForm.controls.address.valid &&

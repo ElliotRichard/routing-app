@@ -3,6 +3,10 @@ import { ROUTE } from '../../shared/types';
 @Pipe({
   name: 'routeString',
 })
+
+/**
+ *  Returns the type of Route that the enum represents
+ */
 export class RouteStringPipe implements PipeTransform {
   transform(value: ROUTE, ...args: unknown[]): string {
     switch (value) {

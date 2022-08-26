@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 // FireBase
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-  AngularFirestore,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { IDog } from '../../shared/types';
 @Injectable({
@@ -19,7 +18,7 @@ export class FireBaseService {
   constructor(
     public auth: AngularFireAuth,
     private firestore: AngularFirestore
-  ) {}
+  ) { }
 
   private getCollectionPath() {
     if (this.authToken.user.uid) {

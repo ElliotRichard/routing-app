@@ -21,7 +21,7 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
   @Input() type: ROUTE | null;
   private waypointComponentIndex?: number;
   public icon: string;
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
     switch (this.type) {

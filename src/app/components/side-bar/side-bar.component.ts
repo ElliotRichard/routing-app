@@ -12,7 +12,7 @@ export class SideBarComponent implements OnInit {
   addressList: Observable<any>;
   sideBarDisplay = 'route-input';
   databaseRoutes: IDog[] = [];
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.addressList = this.dataService.addressList;

@@ -8,14 +8,15 @@ import { FireBaseService } from 'src/app/services/firebase.service';
 })
 export class MenuComponent {
   public userSignedIn = false;
-  constructor (private fireBase: FireBaseService) {
+  constructor(private fireBase: FireBaseService) { }
 
-  }
   signedIn($event: boolean) {
     this.userSignedIn = !!$event;
   }
+
   signOut() {
     this.userSignedIn = false;
     this.fireBase.signOutUser();
   }
+
 }
