@@ -1,2 +1,4 @@
-$primary: #ffb300;
-$accent: #ffcc80;
+@use '@angular/material' as mat;
+@import 'material';
+$primary: mat.get-color-from-palette($theme-primary, 600);
+$accent: mat.get-color-from-palette($theme-accent,600);
