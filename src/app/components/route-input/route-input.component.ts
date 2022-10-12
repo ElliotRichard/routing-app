@@ -36,12 +36,9 @@ export class RouteInputComponent implements OnInit {
     dateInput: new FormControl('', [Validators.required]),
   });
   time = new FormControl('', [Validators.required]);
-  // timeMatcher = new CurrentTimeMatcher(this.minDate);
   maxDate = new Date();
   showDatePicker: boolean = false;
   validRoute: boolean = true;
-
-
 
   constructor(
     private dataService: DataService,
@@ -126,49 +123,7 @@ export class RouteInputComponent implements OnInit {
         console.log(`time errors`, timeErrors, !!timeErrors.required, requiredError, ' dirt thou', formDirty);
         console.log(this.timeDateForm.controls.timeInput.errors && this.timeDateForm.controls.timeInput.errors.required, this.timeDateForm.controls.timeInput.errors.required === true, !this.timeDateForm.controls.timeInput.errors.required === true)
       }
-
     });
-
-    /**
-    this.timeDateForm.valueChanges.subscribe((timeDate) => {    
-    console.log(`timeDate ${timeDate}`)
-      const currentDateInputString = (this.timeDateForm.get('dateInput').value).toISOString().substring(0, 10);
-      const currentDateInputDate = new Date(currentDateInputString);
-      currentDateInputDate.setDate(currentDateInputDate.getDate() + 1);
-      const currentDateInput = currentDateInputDate.toISOString().substring(0,10);
-      const currentDateString = this.minDate.toISOString().substring(0, 10);
-      const currentTimeInputString = this.timeDateForm.get('timeInput').value.split(':');
-      const currentTime = Date.now();
-      const chosenTime = new Date();
-      const timeInPast = Date.now() 
-      chosenTime.setHours(currentTimeInputString[0]);
-      chosenTime.setMinutes(currentTimeInputString[1]);
-      if (chosenTime.getTime() < currentTime && currentDateInput === this.minDate.toISOString().substring(0, 10)) {
-        // print error message
-        console.log('Time must be in the future');
-        this.timeDateForm.setErrors({ pastTime: true });
-      } else {
-      
-        this.timeDateForm.setErrors(null);
-        console.log('Date Time for route is valid');
-        console.log(`${chosenTime.getTime()} < ${currentTime} = ${chosenTime.getTime() < currentTime}`);
-        console.log(`${currentDateInput} === ${this.minDate.toISOString().substring(0, 10)} = ${currentDateInput === this.minDate.toISOString().substring(0, 10)}`); 
-        // this.selectedDate =
-          // this.selectedTime =
-          // this.validRoute = true;
-      }
-    });
-    */
-
-    /*     this.time.valueChanges.subscribe((time: string) => {
-          const currentTime = Date.now();
-          const chosenTime = new Date(this.selectedDate);
-          console.log(`Chosen Date: ${this.selectedDate} time: ${time}`);
-          chosenTime.setHours(Number(time.split(':')[0]));
-          chosenTime.setMinutes(Number(time.split(':')[1]));
-          this.time.setErrors({ pastTime: (chosenTime.getTime() > currentTime) });
-        }) 
-    */
   }
 
   routeLocationAdded(): void {
