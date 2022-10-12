@@ -10,7 +10,7 @@ import { FormControl, FormGroupDirective, NgForm, FormGroup, Validators } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { DataService } from '../../services/data.service';
 import { ROUTE, IRouteLocation, IDogLocation } from '../../../shared/types';
-
+import { setTime } from './TimeValidator';
 
 @Component({
   selector: 'app-route-input',
@@ -25,18 +25,17 @@ export class RouteInputComponent implements OnInit {
   public showAddWaypoint = false;
   public showFindRoute = false;
   private addressCount = 0;
-  selectedTime: any = 0;
-  selectedDate: any = 0;
-  currentYear = new Date().getFullYear();
-  currentTime = new Date();
+  // selectedTime: any = 0;
+  // selectedDate: any = 0;
+  // currentYear = new Date().getFullYear();
+  // currentTime = new Date();
   // Can't set route times in the past
   minDate = new Date();
+  maxDate = new Date();
   timeDateForm: FormGroup = new FormGroup({
     timeInput: new FormControl('', [Validators.required]),
     dateInput: new FormControl('', [Validators.required]),
   });
-  time = new FormControl('', [Validators.required]);
-  maxDate = new Date();
   showDatePicker: boolean = false;
   validRoute: boolean = true;
 
@@ -150,16 +149,22 @@ export class RouteInputComponent implements OnInit {
     this.routeLocationAdded();
   }
 
+  getDateFromTimeDateForm(): Date {
+    let dateInput = this.timeDateForm.get('dateInput');
+    let timeInput = this.timeDateForm.get('timeInput');
+    let date = new Date(dateInput.value);
+    return setTime(date, timeInput.value);
+  }
+
   getRoute(): void {
     this.routeAdded.emit(true);
-
-    const time = new Date(`${this.selectedDate}T${this.selectedTime}:00Z`);
-    console.log('Time details', this.selectedDate, this.selectedTime, time);
-    this.dataService.setDepartureTime(time);
+    const routeTime = this.getDateFromTimeDateForm();
+    console.log('Time details', routeTime.toString());
+    this.dataService.setDepartureTime(routeTime);
     this.dataService.plotRoute();
   }
 
-  optimizeRoute() {
+  optimizeRoute(): void {
     this.dataService.reverseRouteOptimization();
   }
 
