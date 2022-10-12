@@ -7,17 +7,17 @@ import { RouteInputComponent } from './route-input.component';
 describe("timeDateValidator should return specific errors under specific situations", () => {
   let form: FormGroup;
   let currentTime: Date, currentDate: Date;
-  let dateInput: AbstractControl, timeInput: AbstractControl;
+  let date: AbstractControl, timeInput: AbstractControl;
   beforeEach(() => {
     form = new FormGroup({
       timeInput: new FormControl('', [Validators.required]),
-      dateInput: new FormControl('', [Validators.required]),
+      date: new FormControl('', [Validators.required]),
     }, [timeDateValidator]);
     currentTime = new Date();
     currentDate = new Date();
     currentDate.setHours(+'00');
     currentDate.setMinutes(+'00');
-    dateInput = form.get('dateInput');
+    date = form.get('date');
     timeInput = form.get('timeInput');
   });
 
@@ -31,16 +31,16 @@ describe("timeDateValidator should return specific errors under specific situati
   // }
 
   it('should pass if time date is  later  today', () => {
-    dateInput.setValue(new Date());
+    date.setValue(new Date());
     timeInput.setValue('20:00');
     expect(form.errors).toBe(null);
   });
   it('should fail if time date has recently past', () => {
-    dateInput.setValue(currentDate);
+    date.setValue(currentDate);
     timeInput.setValue(getPastTime(currentTime));
     form.markAsDirty();
     timeInput.markAsDirty();
-    dateInput.markAsDirty();
+    date.markAsDirty();
     form.updateValueAndValidity();
     expect(form.errors).toEqual({ 'todayButTimePast': true });
   });
@@ -54,8 +54,8 @@ describe("timeDateValidator should return specific errors under specific situati
   });
   it("should input date in control", () => {
     let tomorrow = currentTime.setDate(currentTime.getDate() + 1)
-    dateInput.setValue(tomorrow)
-    expect(form.controls.dateInput.value).toBe(tomorrow);
+    date.setValue(tomorrow)
+    expect(form.controls.date.value).toBe(tomorrow);
   });
   it("shouldn't have any errors when it hasn't been touched", () => {
     expect(form.errors).toEqual(null);
@@ -82,11 +82,11 @@ describe("timeDateValidator should return specific errors under specific situati
     pastDate.setMonth(pastDate.getMonth() - 1);
 
     timeInput.setValue(mockInput);
-    dateInput.setValue(pastDate);
+    date.setValue(pastDate);
     // form.markAsTouched();
     form.markAsDirty();
     form.updateValueAndValidity();
-    // expect(dateInput.value).toBe(pastDate);
+    // expect(date.value).toBe(pastDate);
     expect(form.pristine).toBeFalse();
   });
   it("should have an error when the time and date has past", () => {
@@ -100,19 +100,19 @@ describe("timeDateValidator should return specific errors under specific situati
     // pastDate.setMonth(pastDate.getMonth() - 1);
 
     timeInput.setValue(pastTime);
-    dateInput.setValue(pastDate);
+    date.setValue(pastDate);
     form.markAsDirty();
     timeInput.markAsDirty();
-    dateInput.markAsDirty();
+    date.markAsDirty();
     form.updateValueAndValidity();
     expect(form.errors).toEqual({ dateHasPast: true });
   });
   it("should be invalid since time & date has passed", () => {
     timeInput.setValue(getPastTime(currentTime));
-    dateInput.setValue(getPastDate());
+    date.setValue(getPastDate());
     form.markAsDirty();
     timeInput.markAsDirty();
-    dateInput.markAsDirty();
+    date.markAsDirty();
     form.updateValueAndValidity();
     expect(form.valid).toBeFalse();
   });
