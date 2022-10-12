@@ -30,8 +30,24 @@
 .route-input__findRoute {
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top: 20px;
+}
+
+.route-input__findRoute button {
+  margin-top: 20px;
+}
+
+.route-input__findRoute mat-slide-toggle {
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+.route-input__findRoute__datePicker {
+  display: flex;
+  align-items: center;
+  justify-content:center;
 }
 
 .address_input {
