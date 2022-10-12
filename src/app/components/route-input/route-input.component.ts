@@ -12,39 +12,6 @@ import { DataService } from '../../services/data.service';
 import { ROUTE, IRouteLocation, IDogLocation } from '../../../shared/types';
 
 
-export class CurrentTimeMatcher implements ErrorStateMatcher {
-  private currentDate;
-
-  constructor(date) {
-    this.currentDate = date;
-  }
-
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const chosenDate = new Date();
-    const currentDate = new Date();
-    if (currentDate === chosenDate) {
-      const currentTime = Date.now();
-      const chosenHour = control.value.split(':')[0];
-      const chosenMin = control.value.split(':')[1];
-      const chosenTime = new Date();
-      chosenTime.setHours(chosenHour);
-      chosenTime.setMinutes(chosenMin);
-      return (chosenTime.getTime() > currentTime);
-
-    }
-    const cTime = new Date();
-    const timeString = `${cTime.getHours}${cTime.getMinutes()}`;
-    (control.value.replace(':', '') < timeString)
-    //    if (time in lesser && day is today) { reject}
-    console.log(control.value);
-    return (true)
-  }
-
-  setCurrentDate(newDate) {
-    this.currentDate = newDate;
-  }
-}
-
 @Component({
   selector: 'app-route-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -230,6 +197,7 @@ export class RouteInputComponent implements OnInit {
 
   getRoute(): void {
     this.routeAdded.emit(true);
+
     const time = new Date(`${this.selectedDate}T${this.selectedTime}:00Z`);
     console.log('Time details', this.selectedDate, this.selectedTime, time);
     this.dataService.setDepartureTime(time);
