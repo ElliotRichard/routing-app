@@ -4,44 +4,38 @@ import { timeDateValidator, isChosenDateToday, hasChosenTimePast, timeDate } fro
 import { RouteInputComponent } from './route-input.component';
 
 
-describe("timeDateValidator should return specific errors under specific situations", () => {
+describe("timeDateValidator should return specific errors", () => {
   let form: FormGroup;
   let currentTime: Date, currentDate: Date;
-  let date: AbstractControl, timeInput: AbstractControl;
+  let date: AbstractControl, time: AbstractControl;
   beforeEach(() => {
     form = new FormGroup({
       timeInput: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      dateInput: new FormControl('', [Validators.required]),
     }, [timeDateValidator]);
     currentTime = new Date();
     currentDate = new Date();
     currentDate.setHours(+'00');
     currentDate.setMinutes(+'00');
-    date = form.get('date');
-    timeInput = form.get('timeInput');
+    date = form.get('dateInput');
+    time = form.get('timeInput');
   });
 
-  // const updateForm = (td: timeDate) => {
-  //   time.setValue(td.time);
-  //   date.setValue(td.date);
-  //   form.markAsDirty();
-  //   time.markAsDirty();
-  //   date.markAsDirty();
-  //   form.updateValueAndValidity();
-  // }
-
-  it('should pass if time date is  later  today', () => {
-    date.setValue(new Date());
-    timeInput.setValue('20:00');
-    expect(form.errors).toBe(null);
-  });
-  it('should fail if time date has recently past', () => {
-    date.setValue(currentDate);
-    timeInput.setValue(getPastTime(currentTime));
+  const updateForm = (td: timeDate) => {
+    time.setValue(td.time);
+    date.setValue(td.date);
     form.markAsDirty();
-    timeInput.markAsDirty();
+    time.markAsDirty();
     date.markAsDirty();
     form.updateValueAndValidity();
+  }
+
+  it('should pass if time is later today (date is today)', () => {
+    updateForm({ time: '20:00', date: new Date() });
+    expect(form.errors).toBe(null);
+  });
+  it('should fail if time has recently past (date is today)', () => {
+    updateForm({ time: `13:00`, date: currentTime });
     expect(form.errors).toEqual({ 'todayButTimePast': true });
   });
   it("should input time in control", () => {
@@ -49,13 +43,17 @@ describe("timeDateValidator should return specific errors under specific situati
     if (pastHour !== 0) pastHour--;
     pastHour = `0${pastHour}`.slice(-2);
     const mockInput = `${pastHour}:${currentTime.getMinutes()}`;
-    timeInput.setValue(mockInput);
-    expect(form.controls.timeInput.value).toBe(mockInput);
+    time.setValue(mockInput);
+    form.markAsDirty();
+    time.markAsDirty();
+    date.markAsDirty();
+    form.updateValueAndValidity();
+    expect(time.value).toBe(mockInput);
   });
   it("should input date in control", () => {
     let tomorrow = currentTime.setDate(currentTime.getDate() + 1)
     date.setValue(tomorrow)
-    expect(form.controls.date.value).toBe(tomorrow);
+    expect(date.value).toBe(tomorrow);
   });
   it("shouldn't have any errors when it hasn't been touched", () => {
     expect(form.errors).toEqual(null);
@@ -75,13 +73,12 @@ describe("timeDateValidator should return specific errors under specific situati
   });
   it("should not be pristine when controls have a value", () => {
     let pastHour: string | number = currentTime.getHours();
-    if (pastHour !== 0) pastHour--;
+    if (pastHour !== 0) +pastHour--;
     pastHour = `0${pastHour}`.slice(-2);
     const mockInput = `${pastHour}:${currentTime.getMinutes()}`;
     const pastDate = new Date();
     pastDate.setMonth(pastDate.getMonth() - 1);
-
-    timeInput.setValue(mockInput);
+    time.setValue(mockInput);
     date.setValue(pastDate);
     // form.markAsTouched();
     form.markAsDirty();
@@ -89,29 +86,18 @@ describe("timeDateValidator should return specific errors under specific situati
     // expect(date.value).toBe(pastDate);
     expect(form.pristine).toBeFalse();
   });
-  it("should have an error when the time and date has past", () => {
+  it("should have an error when the time and date is past", () => {
     const pastTime = getPastTime(currentTime);
     const pastDate = getPastDate();
-    // let pastHour: string | number = currentTime.getHours();
-    // if (pastHour !== 0) pastHour--;
-    // pastHour = `0${pastHour}`.slice(-2);
-    // const mockInput = `${pastHour}:${currentTime.getMinutes()}`;
-    // const pastDate = new Date();
-    // pastDate.setMonth(pastDate.getMonth() - 1);
-
-    timeInput.setValue(pastTime);
-    date.setValue(pastDate);
-    form.markAsDirty();
-    timeInput.markAsDirty();
-    date.markAsDirty();
-    form.updateValueAndValidity();
+    pastDate.setMonth(pastDate.getMonth() - 1);
+    updateForm({time: pastTime, date: pastDate});
     expect(form.errors).toEqual({ dateHasPast: true });
   });
   it("should be invalid since time & date has passed", () => {
-    timeInput.setValue(getPastTime(currentTime));
+    time.setValue(getPastTime(currentTime));
     date.setValue(getPastDate());
     form.markAsDirty();
-    timeInput.markAsDirty();
+    time.markAsDirty();
     date.markAsDirty();
     form.updateValueAndValidity();
     expect(form.valid).toBeFalse();
