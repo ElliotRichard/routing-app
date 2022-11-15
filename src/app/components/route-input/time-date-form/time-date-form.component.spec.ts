@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TimeDateFormComponent } from './time-date-form.component';
-import { getFutureDate, getFutureTime, getPastDate, getPastTime } from '../TimeValidator.spec';
 import { timeDate } from '../TimeValidator';
 
 describe('TimeDateFormComponent logic', () => {
@@ -108,3 +107,29 @@ describe('TimeDateFormComponent logic', () => {
   });
 });
 
+
+export const getPastTime = (comparedTo: Date) => {
+  let pastHour: string | number = comparedTo.getHours();
+  if (pastHour !== 0) pastHour--;
+  pastHour = `0${pastHour}`.slice(-2);
+  return `${pastHour}:${comparedTo.getMinutes()}`;
+}
+
+export const getFutureTime = (comparedTo: Date) => {
+  let futureHour: string | number = comparedTo.getHours();
+  if (futureHour !== 23) futureHour++;
+  futureHour = `0${futureHour}`.slice(-2);
+  return `${futureHour}:${comparedTo.getMinutes()}`;
+}
+
+export const getPastDate = () => {
+  const pastDate = new Date();
+  pastDate.setMonth(pastDate.getMonth() - 2);
+  return pastDate;
+}
+
+export const getFutureDate = () => {
+  const futureDate = new Date();
+  futureDate.setMonth(futureDate.getMonth() + 2);
+  return futureDate;
+}

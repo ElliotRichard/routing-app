@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { timeDateValidator, isChosenDateToday, hasChosenTimePast, timeDate } from './TimeValidator';
 import { RouteInputComponent } from './route-input.component';
-
+import { getFutureDate, getFutureTime, getPastDate, getPastTime } from './time-date-form/time-date-form.component.spec';
 
 describe("timeDateValidator should return specific errors", () => {
   let form: FormGroup;
@@ -161,29 +161,3 @@ describe("time & date logic should be correct", () => {
     expect(isChosenDateToday(currentDate)).toBeTrue();
   });
 });
-
-export const getPastTime = (comparedTo: Date) => {
-  let pastHour: string | number = comparedTo.getHours();
-  if (pastHour !== 0) pastHour--;
-  pastHour = `0${pastHour}`.slice(-2);
-  return `${pastHour}:${comparedTo.getMinutes()}`;
-}
-
-export const getFutureTime = (comparedTo: Date) => {
-  let futureHour: string | number = comparedTo.getHours();
-  if (futureHour !== 23) futureHour++;
-  futureHour = `0${futureHour}`.slice(-2);
-  return `${futureHour}:${comparedTo.getMinutes()}`;
-}
-
-export const getPastDate = () => {
-  const pastDate = new Date();
-  pastDate.setMonth(pastDate.getMonth() - 2);
-  return pastDate;
-}
-
-export const getFutureDate = () => {
-  const futureDate = new Date();
-  futureDate.setMonth(futureDate.getMonth() + 2);
-  return futureDate;
-}
