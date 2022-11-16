@@ -1,0 +1,38 @@
+<form [formGroup]="timeDateForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [min]="minDate" [matDatepicker]="picker" formControlName="dateInput">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a time</mat-label>
+    <input matInput name="routeStartTime" placeholder="Choose a time" type="time" formControlName="timeInput">
+    <mat-icon matSuffix>
+      watch_later
+    </mat-icon>
+  </mat-form-field>
+
+  <ng-container *ngIf="timeDateForm.dirty">
+    <ng-container *ngIf="timeDateForm.errors">
+      <mat-error class="errorMessages">
+        <p *ngIf="timeDateForm.errors.todayButTimePast">Time must be set in the future</p>
+        <p *ngIf="timeDateForm.errors.dateHasPast">Time & Date must be set in the future</p>
+      </mat-error>
+    </ng-container>
+  </ng-container>
+</form>
+<p>Errors</p>
+<ng-container *ngIf="timeDateForm.errors">
+  {{timeDateForm.errors | json}}
+</ng-container>
+<p>Time</p>
+<ng-container *ngIf="timeDateForm.get('timeInput').value as time">
+  {{ time }}
+</ng-container>
+<p>Date</p>
+<ng-container *ngIf="timeDateForm.get('dateInput').value as date">
+  {{ date }}
+</ng-container>
