@@ -10,7 +10,7 @@ import { FormControl, FormGroupDirective, NgForm, FormGroup, Validators } from '
 import { ErrorStateMatcher } from '@angular/material/core';
 import { DataService } from '../../services/data.service';
 import { ROUTE, IRouteLocation, IDogLocation } from '../../../shared/types';
-import { setTime } from './TimeValidator';
+import { setTime } from '../../../shared/utilities';
 
 @Component({
   selector: 'app-route-input',
