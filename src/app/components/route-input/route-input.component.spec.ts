@@ -2,11 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouteStringPipe } from 'src/app/pipes/route-string.pipe';
 import { RouteInputComponent } from './route-input.component';
 import { MatIconModule } from '@angular/material/icon';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { AddressInputComponent } from '../address-input/address-input.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 describe('RouteInputComponent', () => {
   let component: RouteInputComponent;
   let fixture: ComponentFixture<RouteInputComponent>;
@@ -20,11 +23,13 @@ describe('RouteInputComponent', () => {
         RouteStringPipe,
       ],
       imports: [
+	HttpClientTestingModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatSlideToggleModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        GoogleMapsModule
       ],
     }).compileComponents();
   });
@@ -39,7 +44,11 @@ describe('RouteInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should pass if input time is in past', () => {
+    it('should have an input that allows time/date input', () => {
+	expect(component.timeDateForm).toBeTruthy();
+    });
+    
+    it('should pass if input time is in past', () => {
     let pastHour: string | number = currentTime.getHours();
     if (pastHour !== 0) pastHour--;
     pastHour = `0${pastHour}`.slice(-2);

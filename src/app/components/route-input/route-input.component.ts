@@ -59,7 +59,6 @@ export class RouteInputComponent implements OnInit {
     today.setMinutes(0);
     today.setMilliseconds(0);
     const chosenDate = new Date(dateInput);
-    // const chosenDate = new Date(dateInput.toISOString().substring(0, 10));
     chosenDate.setHours(12);
     chosenDate.setMinutes(0);
     chosenDate.setMilliseconds(0);
