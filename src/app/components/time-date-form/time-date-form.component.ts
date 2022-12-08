@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 
 @Component({
@@ -7,16 +7,23 @@ import { FormControl, FormGroup, Validators, ValidationErrors } from '@angular/f
   styleUrls: ['./time-date-form.component.scss']
 })
 export class TimeDateFormComponent implements OnInit {
-  timeDateForm: FormGroup = new FormGroup({
+    @Output() timeDate = new  EventEmitter<any>();
+    timeDateForm: FormGroup = new FormGroup({
     timeInput: new FormControl('', [Validators.required]),
     dateInput: new FormControl('', [Validators.required]),
-  });
+    });
+    timeDateStatus  ;
   showDatePicker = true;
   minDate = new Date();
   constructor() { }
 
   ngOnInit(): void {
-    this.timeDateForm.setValidators(this.timeDateValidator.bind(this));
+      this.timeDateForm.setValidators(this.timeDateValidator.bind(this));
+      this.timeDateForm.statusChanges.subscribe((form)=> {
+	  if (this.timeDateForm.valid) {
+	      this.timeDate.emit(this.timeDateForm.value);
+	  }
+      });
   }
 
   isChosenDateToday(dateInput: Date): boolean {
