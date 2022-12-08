@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TimeDateFormComponent } from './time-date-form.component';
-// import { timeDate } from '../TimeValidator';
 
 describe('TimeDateFormComponent logic', () => {
   let component: TimeDateFormComponent;
@@ -105,6 +104,13 @@ describe('TimeDateFormComponent logic', () => {
     const matError = fixture.debugElement.query(By.css('.errorMessages')).nativeElement;
     expect(matError.innerText).toBe('Time & Date must be set in the future');
   });
+  it('should output timeDate in correct type', () => {
+      spyOn(component.timeDate, 'emit');
+      fixture.detectChanges();
+      updateForm(bothFuture);
+      expect(form.valid).toBeTruthy();
+      expect(component.timeDate.emit).toHaveBeenCalled();
+   });
 });
 
 
