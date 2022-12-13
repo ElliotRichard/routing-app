@@ -25,39 +25,13 @@
 </div>
 <div class="route-input__findRoute displayNone" [ngClass]="{'displayFlex': showFindRoute}">
 
-  <mat-slide-toggle (toggleChange)="showDatePicker = !showDatePicker">Select Route Time</mat-slide-toggle>
+  <mat-slide-toggle checked="false" (toggleChange)="showDatePicker = !showDatePicker">Select Route Time</mat-slide-toggle>
   <div *ngIf="showDatePicker" class="route-input__findRoute__datePicker">
-    <form [formGroup]="timeDateForm">
-      <mat-form-field appearance="outline">
-        <mat-label>Choose a date</mat-label>
-        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" formControlName="dateInput">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Choose a time</mat-label>
-        <input matInput name="routeStartTime" placeholder="Choose a time" type="time" formControlName="timeInput">
-        <mat-icon matSuffix>
-          watch_later
-        </mat-icon>
-
-      </mat-form-field>
-      <ng-container *ngIf="timeDateForm.dirty">
-        <mat-error *ngIf="timeDateForm.controls.timeInput.errors && timeDateForm.controls.timeInput.errors.pastTime">
-          Time must be in the future
-        </mat-error>
-        <mat-error
-          *ngIf="timeDateForm.controls.timeInput.errors && timeDateForm.controls.timeInput.errors.name.includes('required')">
-          Time & Date must be entered {{timeDateForm.controls.timeInput.errors.required}}
-        </mat-error>
-      </ng-container>
-    </form>
+    <app-time-date-form (timeDate)="printRoute($event)"></app-time-date-form>
   </div>
 
   <mat-slide-toggle checked="true" (toggleChange)="optimizeRoute()">Optimize Route</mat-slide-toggle>
 
-  <button mat-raised-button color="primary" [disabled]="showDatePicker != timeDateForm.valid" (click)="getRoute()">Get
+  <button mat-raised-button color="primary" [disabled]="showDatePicker && !validRoute" (click)="getRoute()">Get
     Route</button>
 </div>
