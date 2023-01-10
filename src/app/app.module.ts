@@ -1,7 +1,7 @@
 // Angular
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -59,6 +59,7 @@ import { AddressPipe } from './pipes/address.pipe';
     FormsModule,
     GoogleMapsModule,
     HttpClientModule,
+    HttpClientJsonpModule,
     MatButtonModule,
     MatDialogModule,
     MatDialogModule,
@@ -81,4 +82,4 @@ import { AddressPipe } from './pipes/address.pipe';
   providers: [FireBaseService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
