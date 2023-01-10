@@ -23,8 +23,6 @@ export class AppComponent {
   data: any;
   apiLoaded: Observable<boolean>;
   constructor(
-    public dialog: MatDialog,
-    // public dialog: MatDialog,
     private domSanitizer: DomSanitizer,
     private matIconRegistry: MatIconRegistry,
     private httpClient: HttpClient,
