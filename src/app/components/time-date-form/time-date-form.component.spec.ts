@@ -91,18 +91,16 @@ describe('TimeDateFormComponent logic', () => {
     time.setValue(futureTime);
     expect(time.valid).toBeTrue();
   });
-  it('should display todayButTimePast error message (date is today)', () => {
-    let pastTime = getPastTime(currentTime);
-    updateForm({ time: pastTime, date: currentTime });
-    fixture.detectChanges();
-    const errorElement = fixture.debugElement.query(By.css('.errorMessages')).nativeElement;
-    expect(errorElement.innerText).toBe('Time must be set in the future');
+  it('should have todayButTimePast error message (date is today)', () => {
+      let pastTime = getPastTime(currentTime);
+      updateForm({ time: pastTime, date: currentTime });
+      fixture.detectChanges();
+      expect(form.errors).toEqual({'todayButTimePast': true});
   });
-  it('should display dateHasPast error message', () => {
-    updateForm(bothPast);
-    fixture.detectChanges();
-    const matError = fixture.debugElement.query(By.css('.errorMessages')).nativeElement;
-    expect(matError.innerText).toBe('Time & Date must be set in the future');
+  it('should have dateHasPast error message', () => {
+      updateForm(bothPast);
+      fixture.detectChanges();
+      expect(form.errors).toEqual({'dateHasPast': true});
   });
   it('should output timeDate in correct type', () => {
       spyOn(component.timeDate, 'emit');
