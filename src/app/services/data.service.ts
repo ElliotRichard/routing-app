@@ -92,5 +92,9 @@ export class DataService {
     this.waypointMap = new Map<number, any>();
     this.route = { optimizeRoute: true, departureTime: null, waypoints: [] };
   }
+
+  reverseRouteOptimization(): void {
+    this.route.optimizeRoute = !this.route.optimizeRoute;
+  }
   }
 }
