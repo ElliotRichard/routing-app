@@ -96,5 +96,8 @@ export class DataService {
   reverseRouteOptimization(): void {
     this.route.optimizeRoute = !this.route.optimizeRoute;
   }
+
+  setDepartureTime(timeDate: Date): void {
+    this.route.departureTime = timeDate;
   }
 }
