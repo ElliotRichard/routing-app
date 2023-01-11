@@ -12,7 +12,7 @@ import { Subject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DataService {
-  private route: IRoute = {};
+  private route: IRoute = { optimizeRoute: true, departureTime: null, waypoints: [] };
   private waypointMap: Map<number, any> = new Map();
   private waypointComponentAmount = 0;
   private dogsForRoute: Subject<IDogLocation> = new Subject<IDogLocation>();
@@ -90,5 +90,7 @@ export class DataService {
   clearRoute(): void {
     this.directionsPanelElement.next(null);
     this.waypointMap = new Map<number, any>();
+    this.route = { optimizeRoute: true, departureTime: null, waypoints: [] };
+  }
   }
 }
