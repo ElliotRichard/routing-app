@@ -43,8 +43,11 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.addressForm.nativeElement.focus();
-    this.setAddress();
+      if (this.type === ROUTE.START || this.type === ROUTE.WAYPOINT) this.addressForm.nativeElement.focus();
+      if (window.google !== undefined) {
+		console.log('Google maps has loaded');
+	  this.setAddress();
+      } else console.log('Google maps has not loaded!');
   }
 
   private setAddress() {
@@ -56,7 +59,10 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
           lat: -41.409775832009544,
         },
         // NorthEast coordinates
-        { lng: 175.1495361328125, lat: -41.01099329360267 }
+        {
+		  lng: 175.1495361328125,
+          lat: -41.01099329360267,
+		}
       );
     const autocomplete = new google.maps.places.Autocomplete(
       this.addressForm.nativeElement,
@@ -79,7 +85,8 @@ export class AddressInputComponent implements OnInit, AfterViewInit {
       } else this.dataService.addRoute(place, this.type);
     });
   }
-  addressSet(place: google.maps.places.PlaceResult) {
+    
+  private addressSet(place: google.maps.places.PlaceResult) {
     this.address.emit(place);
     this.dataService.setMapCenter(place);
   }
