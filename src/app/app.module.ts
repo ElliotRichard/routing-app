@@ -4,18 +4,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 // Material
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // Firebase
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -38,6 +42,7 @@ import { environment } from '../environments/environment';
 // Services
 import { FireBaseService } from './services/firebase.service';
 import { AddressPipe } from './pipes/address.pipe';
+import { TimeDateFormComponent } from './components/time-date-form/time-date-form.component';
 
 @NgModule({
   declarations: [
@@ -52,34 +57,38 @@ import { AddressPipe } from './pipes/address.pipe';
     SignInComponent,
     UserDialogComponent,
     AddressPipe,
+    TimeDateFormComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     BrowserModule,
     FormsModule,
     GoogleMapsModule,
     HttpClientModule,
     HttpClientJsonpModule,
     MatButtonModule,
-    MatDialogModule,
-    MatDialogModule,
-    MatFormFieldModule,
+	MatDialogModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
-    MatIconModule,
-    MatInputModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatNativeDateModule,
+    MatSlideToggleModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     NoopAnimationsModule,
     ReactiveFormsModule,
-    ReactiveFormsModule,
   ],
-  providers: [FireBaseService],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-NZ' },
+    FireBaseService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
