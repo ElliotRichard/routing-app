@@ -1,6 +1,6 @@
-import { Time } from './types';
+// import { Time } from './types';
 
-export const setTime = (date: Date, time: string) => {
+export const setTime = (date: Date, time: string): Date => {
     let hours = time.slice(0, 2);
     let minutes = time.slice(-2);
     date.setHours(+hours);
@@ -8,10 +8,10 @@ export const setTime = (date: Date, time: string) => {
     return date;
   }
   
- export const getHours = (time: Time) => {
-    return time.slice(0, 2);
-  }
+//  export const getHours = (time: Time) => {
+//     return time.slice(0, 2);
+//   }
   
- export const getMin = (time: Time) => {
-    return time.slice(-2);
-  }
+//  export const getMin = (time: Time) => {
+//     return time.slice(-2);
+//   }

@@ -16,16 +16,16 @@ export class FireBaseService {
   private authToken;
 
   constructor(
-    public auth: AngularFireAuth,
+    private auth: AngularFireAuth,
     private firestore: AngularFirestore
   ) { }
 
   private getCollectionPath() {
-    if (this.authToken.user.uid) {
-      return `dogs/${this.authToken.user.uid}/dogs`;
+      if (this.authToken) {
+		return `dogs/${this.authToken.user.uid}/dogs`;
     } else {
-      console.log('No user signed in');
-      return ``;
+		console.log('No user signed in');
+		return ``;
     }
   }
 
@@ -61,8 +61,8 @@ export class FireBaseService {
     this.firestore.collection(this.getCollectionPath()).doc(dog.name).delete();
   }
 
-  getUserCollection(): Observable<any> {
-    console.log('Fetching with', `dogs/${this.authToken.user.uid}/dogs`);
+    getUserCollection(): Observable<any> {
+	if (this.authToken) console.log('Fetching with', `dogs/${this.authToken.user.uid}/dogs`);
     const userCollection = this.firestore.collection(this.getCollectionPath());
     return userCollection.valueChanges({ idField: 'name' });
   }
