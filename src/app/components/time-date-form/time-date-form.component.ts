@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
+import { setTime } from '../../../shared/utilities';
 
 @Component({
   selector: 'app-time-date-form',
@@ -7,23 +8,34 @@ import { FormControl, FormGroup, Validators, ValidationErrors } from '@angular/f
   styleUrls: ['./time-date-form.component.scss']
 })
 export class TimeDateFormComponent implements OnInit {
-    @Output() timeDate = new  EventEmitter<any>();
-    timeDateForm: FormGroup = new FormGroup({
+  @Output() timeDate = new EventEmitter<Date | boolean>();
+  timeDateForm: FormGroup = new FormGroup({
     timeInput: new FormControl('', [Validators.required]),
     dateInput: new FormControl('', [Validators.required]),
-    });
-    timeDateStatus  ;
+  });
   showDatePicker = true;
   minDate = new Date();
   constructor() { }
 
   ngOnInit(): void {
-      this.timeDateForm.setValidators(this.timeDateValidator.bind(this));
-      this.timeDateForm.statusChanges.subscribe((form)=> {
-	  if (this.timeDateForm.valid) {
-	      this.timeDate.emit(this.timeDateForm.value);
-	  }
-      });
+    this.timeDateForm.setValidators(this.timeDateValidator.bind(this));
+    this.timeDateForm.statusChanges.subscribe((form) => {
+      if (this.timeDateForm.valid) {
+        let timeDateResult = setTime(
+          this.timeDateForm.get('dateInput').value,
+          this.timeDateForm.get('timeInput').value
+        );
+        this.timeDate.emit(timeDateResult);
+      } else {
+        console.log(`timeDateForm Component status: ${this.timeDateForm.status}`);
+        this.timeDate.emit(false);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    console.log('we outta here!');
+    this.timeDate.emit(new Date);
   }
 
   isChosenDateToday(dateInput: Date): boolean {
@@ -33,7 +45,7 @@ export class TimeDateFormComponent implements OnInit {
     const sameDate = today.getDate() === dateInput.getDate();
     return sameYear && sameMonth && sameDate;
   }
-  
+
   hasChosenTimePast(timeInput: string): boolean {
     const rightNow = new Date();
     let currentHour = `0${rightNow.getHours()}`.slice(-2);
@@ -50,17 +62,17 @@ export class TimeDateFormComponent implements OnInit {
     const timeInput = form.get('timeInput');
     if ((dateInput && timeInput) && (dateInput.value && timeInput.value)) {
       const dateValue = <Date>dateInput.value;
-      const timeValue = <string>timeInput.value;  
+      const timeValue = <string>timeInput.value;
       let chosen = new Date(dateValue);
       chosen.setHours(+timeValue.slice(0, 2));
       chosen.setMinutes(+timeValue.slice(-2));
       const dateChosenInPast = chosen.getTime() < Date.now();
       const chosenDateToday = this.isChosenDateToday(dateValue);
-      
+
       if (dateChosenInPast) {
-        error = { 'dateHasPast': true};
+        error = { 'dateHasPast': true };
         if (chosenDateToday) {
-          error = { 'todayButTimePast': true};
+          error = { 'todayButTimePast': true };
         }
       }
     }
