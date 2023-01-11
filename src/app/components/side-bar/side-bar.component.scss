@@ -1,11 +1,12 @@
 .side-bar {
   box-sizing: border-box;
   height: 90vh;
-  margin: 0;
+  margin: 2% 10px;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0;
   width: 20vw;
+  min-width: 200px;
 }
 
 .side-bar__address-list__new-route {
