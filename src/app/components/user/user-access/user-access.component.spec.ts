@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { UserAccessComponent } from './user-access.component';
 
 describe('UserAccessComponent', () => {
@@ -8,7 +8,8 @@ describe('UserAccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserAccessComponent ]
+      declarations: [ UserAccessComponent ],
+      imports: [ MatDialogModule],
     })
     .compileComponents();
   });
