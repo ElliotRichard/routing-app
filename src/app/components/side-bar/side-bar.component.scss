@@ -22,3 +22,8 @@
   max-height: 50vh;
   overflow-y: auto;
 }
+
+::ng-deep .mat-list-text {
+    height: 100%;
+    overflow: auto;
+}
